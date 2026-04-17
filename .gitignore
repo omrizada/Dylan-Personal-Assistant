@@ -1,0 +1,29 @@
+# Personal data - NEVER commit these
+resources/*
+!resources/.gitkeep
+output/documents/*
+output/analyses/*
+output/strategies/*
+!output/documents/.gitkeep
+!output/analyses/.gitkeep
+!output/strategies/.gitkeep
+
+# Brain data (populated by user)
+brain/resources/summaries/*
+brain/resources/insights/*
+brain/resources/ingested/*
+!brain/resources/summaries/.gitkeep
+!brain/resources/insights/.gitkeep
+
+# Claude Code local config
+.claude/channels/
+.claude/plans/
+.claude/projects/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+*.env.local
