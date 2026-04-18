@@ -57,7 +57,7 @@
 
 ```
 personal-assistant-template/
-├── CLAUDE.md                  # Main system prompt (Claude Code reads this)
+├── CLAUDE.md                  # Main system prompt — compressed (~150 lines)
 ├── README.md                  # This file
 ├── SETUP.md                   # Setup instructions
 ├── ARCHITECTURE.md            # You are here
@@ -68,6 +68,7 @@ personal-assistant-template/
 ├── config.example.md          # Variable reference
 │
 ├── agents/                    # Agent definitions (system prompts)
+│   ├── AGENT_INDEX.md         # Compact routing table (AMs + specialists)
 │   ├── chief-of-staff.md      # Orchestrator agent
 │   ├── analyst.md             # Deep analysis agent
 │   ├── strategist.md          # Strategic planning agent
@@ -76,10 +77,19 @@ personal-assistant-template/
 │   ├── market-researcher.md   # External research agent
 │   ├── onboarding-coach.md    # Brain population agent
 │   ├── librarian.md           # Knowledge management agent
-│   ├── security-scanner.md   # Automated security scanning agent
-│   └── input-guard.md       # Message screening agent (prompt injection defense)
+│   ├── security-scanner.md    # Automated security scanning agent
+│   ├── input-guard.md         # Message screening agent (prompt injection defense)
+│   └── account-managers/
+│       ├── _am-base.md        # Shared AM behavior (all AMs reference this)
+│       ├── work-am.md         # Work channel AM
+│       ├── side-project-am.md # Side project channel AM
+│       ├── personal-am.md     # Personal channel AM
+│       ├── general-am.md      # General channel AM
+│       └── dev-am.md          # Development channel AM
 │
 ├── skills/                    # Slash command definitions
+│   ├── _skill-pattern.md      # Shared skill structure template
+│   ├── do.md                  # /do — universal command router
 │   ├── brief.md               # /brief — morning briefing
 │   ├── analyze.md             # /analyze — deep analysis
 │   ├── strategize.md          # /strategize — strategic session
@@ -122,6 +132,8 @@ personal-assistant-template/
 │
 ├── brain/                     # Self-learning knowledge base
 │   ├── BRAIN_INDEX.md         # Master index of all brain files
+│   ├── LOADING_PROTOCOL.md    # Tiered loading rules (hot/warm/cold)
+│   ├── frameworks.md          # Shared analytical/strategic/coaching frameworks
 │   ├── context/               # Who you are and what you're doing
 │   │   ├── role-and-goals.md
 │   │   ├── projects.md
@@ -165,6 +177,27 @@ personal-assistant-template/
 └── scripts/
     └── setup.sh               # Interactive setup script
 ```
+
+## Componentization (v5)
+
+The system uses shared components to reduce duplication and keep files focused:
+
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| **CLAUDE.md** | Root | Compressed to ~150 lines. References AGENT_INDEX and LOADING_PROTOCOL instead of inline tables/rules. |
+| **Agent Index** | `agents/AGENT_INDEX.md` | Compact routing table for all 15 agents. CLAUDE.md points here instead of listing agents inline. |
+| **Loading Protocol** | `brain/LOADING_PROTOCOL.md` | Single source of truth for brain file loading tiers (hot/warm/cold). All agents reference this. |
+| **Frameworks Library** | `brain/frameworks.md` | Shared analytical, strategic, coaching, and negotiation frameworks. Agents reference by name. |
+| **AM Base** | `agents/account-managers/_am-base.md` | Shared Account Manager behavior. Each AM file adds only channel-specific content. |
+| **Skill Pattern** | `skills/_skill-pattern.md` | Template structure for creating new skills. Includes brain loading shorthand and output routing. |
+| **Universal Router** | `skills/do.md` | `/do` command that maps natural language intent to the right skill. Users only need to remember one command. |
+
+### Design Principles
+
+1. **Single responsibility**: Each file owns one concept. No duplication across files.
+2. **Reference, don't repeat**: Agents say "Follow LOADING_PROTOCOL.md" instead of listing brain files inline.
+3. **Compressed CLAUDE.md**: The main prompt is a compact index (~150 lines) that points to detailed definitions elsewhere.
+4. **Shared base + overrides**: AMs inherit from `_am-base.md` and add only channel-specific behavior.
 
 ## Brain Connectivity Design
 
@@ -291,6 +324,7 @@ Some requests trigger multiple agents in sequence:
 
 | Command | Agent | Purpose |
 |---------|-------|---------|
+| `/do` | Universal Router | Describe what you want in plain language; routes to the right skill |
 | `/brief` | Chief of Staff | Morning briefing with current state and pending decisions |
 | `/analyze` | Analyst | Deep structured analysis of a topic or resource |
 | `/strategize` | Strategist | Strategic thinking session with frameworks |
