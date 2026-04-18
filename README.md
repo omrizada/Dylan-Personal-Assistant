@@ -1,14 +1,15 @@
 # AI Personal Assistant Team
 
-A multi-channel AI personal assistant system built on Claude Code. Deploy your own team of 14 specialized agents that manage different areas of your life through Telegram.
+A multi-channel AI personal assistant system built on Claude Code. Deploy your own team of 15 specialized agents that manage different areas of your life through Telegram.
 
 ## What Is This?
 
 A "clone and configure" template for a personal AI assistant that:
 - Operates through **5 Telegram channels** (topics in one group), each with a dedicated Account Manager
-- Has a **team of 9 specialist agents** (Analyst, Strategist, Writer, Critic, etc.) that work behind the scenes
-- Maintains a **self-learning brain** of markdown files that grows smarter with every interaction
-- Supports **9 slash commands** (/brief, /analyze, /strategize, /draft, /challenge, /research, /ingest, /onboard, /learn)
+- Has a **team of 10 specialist agents** (Analyst, Strategist, Writer, Critic, Input Guard, Security Scanner, etc.) that work behind the scenes
+- Maintains a **self-learning brain** with tiered memory loading that grows smarter with every interaction
+- Supports **27 slash commands** including core skills (/brief, /analyze, /strategize, /draft, /challenge, /research, /ingest, /onboard, /learn, /status, /decide, /digest) and execution skills (/weekly-review, /meeting-prep, /followup, /triage, /premortem, /report, /reflect, /repurpose, /prioritize, /okr, /delegate, /extract-wisdom, /negotiate, /postmortem, /coach)
+- Includes **security features**: Input Guard screens messages for prompt injection, Security Scanner audits agent files via Caterpillar
 
 ## How It Works
 
@@ -28,7 +29,8 @@ Each channel has its own Account Manager with a distinct personality:
 
 - **Multi-channel routing** via Telegram Forum topics
 - **Account Manager layer** — you never talk to the team directly
-- **Self-learning brain** — auto-captures decisions, preferences, patterns
+- **Self-learning brain** — auto-captures decisions, preferences, patterns with tiered memory loading (hot/warm/cold)
+- **Security hardening** — Input Guard screens for injection attacks, audit log tracks agent actions
 - **Resource ingestion** — feed it documents and it extracts knowledge
 - **Weekly check-ins** — the system asks you questions to improve itself
 - **Graceful degradation** — works with reduced features if integrations are missing

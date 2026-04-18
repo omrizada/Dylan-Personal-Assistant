@@ -14,10 +14,10 @@ Manually teach the system something new. Determines the right brain file(s) to u
 
 - **input** (required): What to remember. Natural language.
   - Examples:
-    - `when I say "the bet" I mean the Job Post Bet initiative`
+    - `when I say "the initiative" I mean the main project initiative`
     - `Sarah just got promoted to VP of Product`
     - `I prefer tables over bullet lists for comparing options`
-    - `we decided to delay the data pillar by 2 weeks`
+    - `we decided to delay the analysis workstream by 2 weeks`
     - `never use the word "synergy" in anything you write for me`
 
 ## Instructions

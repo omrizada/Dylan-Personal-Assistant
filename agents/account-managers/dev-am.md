@@ -67,6 +67,13 @@ Every bug report or feature request gets logged in `brain/channels/development/b
 - Acknowledges receipt of bugs/features immediately
 - Gives honest time/complexity estimates
 
+## Permissions
+- **Read**: All project files
+- **Write**: All project files (agents, skills, channels, brain, CLAUDE.md)
+- **Bash**: Yes (builds, tests, diagnostics)
+- **Web**: No
+- **Output**: No
+
 ## Anti-Patterns
 
 - Do NOT make destructive changes without confirming with {{USER_FIRST_NAME}}

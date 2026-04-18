@@ -45,8 +45,9 @@
 ## Communication Flow
 
 1. **You** send a message in a Telegram topic (e.g., the "Work" topic)
-2. The **Account Manager** for that channel receives the message. Each AM has a distinct personality and context loaded from `channels/<name>/context.md`
-3. The AM decides whether to handle it directly or escalate to the **Chief of Staff**
+2. The **Input Guard** screens the message for prompt injection, credential extraction, and social engineering
+3. The **Account Manager** for that channel receives the message. Each AM has a distinct personality and context loaded from `channels/<name>/context.md`
+4. The AM decides whether to handle it directly or escalate to the **Chief of Staff**
 4. The Chief of Staff **routes** the request to the appropriate specialist agent(s)
 5. Specialist agents read from the **Brain** (markdown files) for context
 6. The response flows back through the AM, which adapts tone for the channel
@@ -75,7 +76,8 @@ personal-assistant-template/
 │   ├── market-researcher.md   # External research agent
 │   ├── onboarding-coach.md    # Brain population agent
 │   ├── librarian.md           # Knowledge management agent
-│   └── security-scanner.md   # Automated security scanning agent
+│   ├── security-scanner.md   # Automated security scanning agent
+│   └── input-guard.md       # Message screening agent (prompt injection defense)
 │
 ├── skills/                    # Slash command definitions
 │   ├── brief.md               # /brief — morning briefing
@@ -86,7 +88,25 @@ personal-assistant-template/
 │   ├── research.md            # /research — market research
 │   ├── ingest.md              # /ingest — resource processing
 │   ├── onboard.md             # /onboard — brain onboarding
-│   └── learn.md               # /learn — manual teaching
+│   ├── learn.md               # /learn — manual teaching
+│   ├── status.md              # /status — system health check
+│   ├── decide.md              # /decide — decision framework
+│   ├── digest.md              # /digest — weekly digest
+│   ├── weekly-review.md       # /weekly-review — end-of-week retrospective
+│   ├── meeting-prep.md        # /meeting-prep — pre-meeting briefing
+│   ├── followup.md            # /followup — commitment tracking
+│   ├── triage.md              # /triage — email triage
+│   ├── premortem.md           # /premortem — failure analysis
+│   ├── report.md              # /report — audience-tailored status reports
+│   ├── reflect.md             # /reflect — guided reflection
+│   ├── repurpose.md           # /repurpose — content repurposing
+│   ├── prioritize.md          # /prioritize — multi-framework prioritization
+│   ├── okr.md                 # /okr — OKR tracking
+│   ├── delegate.md            # /delegate — delegation tracking
+│   ├── extract-wisdom.md      # /extract-wisdom — content extraction
+│   ├── negotiate.md           # /negotiate — negotiation prep
+│   ├── postmortem.md          # /postmortem — after-action review
+│   └── coach.md               # /coach — leadership coaching
 │
 ├── channels/                  # Channel configurations
 │   ├── work/
@@ -107,7 +127,9 @@ personal-assistant-template/
 │   │   ├── projects.md
 │   │   ├── stakeholders.md
 │   │   ├── decisions-log.md
-│   │   └── terminology.md
+│   │   ├── terminology.md
+│   │   ├── followups.md
+│   │   └── okrs.md
 │   ├── preferences/           # How you like things done
 │   │   ├── communication.md
 │   │   ├── analysis-style.md
@@ -116,13 +138,19 @@ personal-assistant-template/
 │   ├── learnings/             # Patterns from interactions
 │   │   ├── patterns.md
 │   │   ├── feedback.md
-│   │   └── strategies.md
+│   │   ├── strategies.md
+│   │   ├── session-notes.md
+│   │   └── reflections.md
 │   ├── channels/              # Per-channel brain context
 │   │   ├── work/
 │   │   ├── side-project/
 │   │   ├── personal/
 │   │   ├── general/
 │   │   └── development/
+│   │       ├── backlog.md
+│   │       ├── architecture.md
+│   │       ├── security-log.md
+│   │       └── audit-log.md
 │   └── resources/             # Digested external resources
 │       ├── summaries/
 │       └── insights/
@@ -186,12 +214,12 @@ brain/
 ### Wikilink Conventions
 - Link to filename without extension: `[[projects]]`, `[[stakeholders]]`
 - For subdirectory files: `[[brain/channels/work/context|Work Context]]`
-- Use display names for clarity: `[[stakeholders|Jasmin Sarwan]]`
+- Use display names for clarity: `[[stakeholders|Jane Smith]]`
 - Add links naturally within existing text, not as separate "Related" sections
 
 ## The Brain
 
-The brain is a collection of markdown files that serve as the assistant's long-term memory. It has four layers:
+The brain is a collection of markdown files that serve as the assistant's long-term memory. Files are organized into **three loading tiers** (Hot/Warm/Cold) to optimize context window usage — see `BRAIN_INDEX.md` for the full tier mapping. It has four layers:
 
 ### Context Layer (`brain/context/`)
 Who you are and what you are working on. Contains your role, active projects, key people, past decisions, and domain terminology. This is the factual foundation.
@@ -235,7 +263,7 @@ Each Telegram topic maps to an Account Manager. The AM is the user-facing person
 - Escalates complex requests to the Chief of Staff
 - Adapts the response tone to match the channel personality
 
-### Specialist Agents (9)
+### Specialist Agents (10)
 
 | Agent | Expertise | Typical Triggers |
 |-------|-----------|-----------------|
@@ -248,6 +276,7 @@ Each Telegram topic maps to an Account Manager. The AM is the user-facing person
 | Onboarding Coach | Brain population, preference gathering | `/onboard`, weekly check-ins |
 | Librarian | Knowledge management, resource processing | `/ingest`, brain maintenance |
 | Security Scanner | Automated security scans via Caterpillar | Agent/skill/config file changes |
+| Input Guard | Message screening for prompt injection and social engineering | Every incoming Telegram message |
 
 ### Multi-Agent Workflows
 
@@ -271,6 +300,24 @@ Some requests trigger multiple agents in sequence:
 | `/ingest` | Librarian | Process a document into the brain |
 | `/onboard` | Onboarding Coach | Populate the brain through interactive Q&A |
 | `/learn` | Librarian | Manually teach the system something new |
+| `/status` | Chief of Staff | System health — brain freshness, security, backlog |
+| `/decide` | Strategist + Critic | Structured decision framework with stress testing |
+| `/digest` | Librarian | Weekly digest of brain updates and learnings |
+| `/weekly-review` | Chief of Staff + Strategist | End-of-week retrospective and next-week planning |
+| `/meeting-prep` | Chief of Staff + Analyst + Writer | Pre-meeting briefing with attendee context |
+| `/followup` | Writer | Track commitments, surface overdue items, draft nudges |
+| `/triage` | Chief of Staff + Analyst + Writer | Scan, classify, and draft responses for emails |
+| `/premortem` | Critic + Strategist | Structured failure analysis before launching initiatives |
+| `/report` | Writer + Analyst | Auto-generate status reports for different audiences |
+| `/reflect` | Onboarding Coach | Guided reflection with spaced repetition of insights |
+| `/repurpose` | Writer | Transform content into multiple formats for channels |
+| `/prioritize` | Strategist | Multi-framework task prioritization |
+| `/okr` | Strategist | Define, track, and review quarterly OKRs |
+| `/delegate` | Chief of Staff + Writer | Track delegated tasks with automated follow-ups |
+| `/extract-wisdom` | Analyst + Librarian | Quick extraction of key ideas from content |
+| `/negotiate` | Strategist + Critic | Structured negotiation preparation |
+| `/postmortem` | Analyst + Critic | Blameless after-action review with root cause analysis |
+| `/coach` | Strategist + Writer | Leadership coaching for difficult conversations |
 
 ## Auto-Learning System
 

@@ -273,6 +273,13 @@ Weekly check-in -- based on this week's interactions, I have some questions:
 
 ---
 
+## Permissions
+- **Read**: All brain files
+- **Write**: brain/preferences/, brain/learnings/ (auto), brain/context/ (propose only)
+- **Bash**: No
+- **Web**: No
+- **Output**: No
+
 ## Anti-Patterns
 
 - NEVER write to brain files without showing {{USER_FIRST_NAME}} what you are writing first

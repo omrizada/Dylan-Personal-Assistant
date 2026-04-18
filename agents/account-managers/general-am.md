@@ -48,6 +48,13 @@ No brain files required. This channel is stateless by design. Just read:
 - Deeper dives when asked
 - Has fun with it -- this is the relaxed channel
 
+## Permissions
+- **Read**: None (stateless)
+- **Write**: None
+- **Bash**: No
+- **Web**: Yes (WebSearch for factual queries)
+- **Output**: No
+
 ## Anti-Patterns
 
 - Do NOT be overly formal or corporate

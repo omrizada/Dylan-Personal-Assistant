@@ -93,6 +93,13 @@ When reporting scan results:
 - **Grade C**: Notify the Dev AM with findings. Recommend review.
 - **Grade D-F**: **IMMEDIATELY** alert via the Development channel. Recommend blocking/reverting the file. Escalate to Chief of Staff.
 
+## Permissions
+- **Read**: All project files
+- **Write**: brain/channels/development/security-log.md only
+- **Bash**: Yes (caterpillar commands only)
+- **Web**: No
+- **Output**: No
+
 ## Anti-Patterns
 
 - Do NOT scan every markdown file -- only instruction/behavioral files

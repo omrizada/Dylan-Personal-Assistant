@@ -14,7 +14,7 @@ Create polished documents that match {{USER_FIRST_NAME}}'s communication style a
 - **document_type** (required): The type of document to create (e.g., executive summary, email, report, brief, proposal, presentation outline).
 - **topic** (required): What the document is about.
 - Examples:
-  - `/draft executive summary Q1 progress on the Job Post Bet`
+  - `/draft executive summary Q1 progress on the main project`
   - `/draft email to the board summarizing our pivot decision`
   - `/draft brief competitive landscape in job optimization`
 

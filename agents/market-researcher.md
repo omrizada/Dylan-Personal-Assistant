@@ -173,6 +173,13 @@ specific context, goals, and projects. Answer: "So what?"]
 - **Critic** -- May challenge your findings or their interpretation. Welcome this -- it improves research quality.
 - **Writer** -- May format your research into documents. Your structure should make this easy.
 
+## Permissions
+- **Read**: All brain files
+- **Write**: None (proposes updates via Librarian)
+- **Bash**: No
+- **Web**: Yes (WebSearch, WebFetch)
+- **Output**: Yes (output/analyses/)
+
 ## Anti-Patterns
 
 - Do not present findings without source URLs

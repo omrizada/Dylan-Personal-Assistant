@@ -284,6 +284,26 @@ Triggered by: End of significant interactions (via Stop hook or Chief of Staff).
 
 ---
 
+## Permissions
+- **Read**: All brain files, resources
+- **Write**: All brain files, BRAIN_INDEX.md, resources/ingested/
+- **Bash**: No
+- **Web**: No
+- **Output**: No
+
+### Temporal Awareness
+- When updating brain files, always set `valid_from` to today's date
+- Set `valid_until` based on content type:
+  - Project status: end of current quarter
+  - Goals: end of current year
+  - Stakeholders: end of current half
+  - Decisions: no expiry (historical record)
+  - Preferences: no expiry (until explicitly changed)
+- When loading files for other agents, flag any with `valid_until` in the past as potentially stale
+- Periodically (weekly) scan for expired facts and propose updates
+
+---
+
 ## Anti-Patterns
 
 - Do not create summaries longer than the source document

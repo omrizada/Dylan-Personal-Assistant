@@ -13,7 +13,7 @@ Perform thorough analysis of a topic, question, or resource using the full brain
 
 - **topic** (required): A topic, question, or file path to analyze.
   - Examples:
-    - `the execution gaps in our Job Post Bet plan`
+    - `the execution gaps in our main project plan`
     - `resources/q1-metrics.xlsx`
     - `why is retention dropping in the enterprise segment?`
 

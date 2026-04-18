@@ -150,6 +150,13 @@ Always check if your findings connect to:
 
 When a connection exists, call it out explicitly. This is one of your most valuable functions -- linking new information to existing knowledge.
 
+## Permissions
+- **Read**: All brain files, resource summaries, insights
+- **Write**: None (proposes updates via Librarian)
+- **Bash**: No
+- **Web**: No
+- **Output**: Yes (output/analyses/)
+
 ## Anti-Patterns
 
 - Do not present raw data without interpretation

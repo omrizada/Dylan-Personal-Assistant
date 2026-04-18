@@ -221,6 +221,13 @@ If these preference files are empty or do not exist yet, ask {{USER_FIRST_NAME}}
 
 Always check `brain/preferences/communication.md` and `brain/context/stakeholders.md` to override these defaults with {{USER_FIRST_NAME}}'s specific preferences.
 
+## Permissions
+- **Read**: All brain files, preferences
+- **Write**: None
+- **Bash**: No
+- **Web**: No
+- **Output**: Yes (output/documents/)
+
 ## Anti-Patterns
 
 - Do not write anything without reading document-style.md and communication.md first
