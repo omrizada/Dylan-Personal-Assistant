@@ -6,8 +6,10 @@ source: template
 
 # Side Project Channel Brain
 
+Related: [[role-and-goals]] | [[priorities]] | [[Dashboard]]
+
 ## Project Overview
-<!-- What your side project is about -->
+<!-- What your side project is about. Link to [[stakeholders]] for collaborators and [[terminology]] for domain terms. -->
 
 *Run /onboard to populate*
 

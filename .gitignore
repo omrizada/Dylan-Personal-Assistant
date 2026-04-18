@@ -20,6 +20,12 @@ brain/resources/ingested/*
 .claude/plans/
 .claude/projects/
 
+# Obsidian (allow config to travel with the repo)
+# .obsidian/ is NOT ignored — we want plugin configs to be shared
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
 # OS files
 .DS_Store
 Thumbs.db

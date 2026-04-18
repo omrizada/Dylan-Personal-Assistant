@@ -4,7 +4,7 @@ last_updated:
 
 # Brain Index
 
-Master index of all brain files. Updated automatically when brain files change.
+Master index of all brain files. Updated automatically when brain files change. See [[Dashboard]] for visual navigation.
 
 ## Context
 
@@ -42,6 +42,7 @@ Master index of all brain files. Updated automatically when brain files change.
 | `channels/personal/preferences.md` | Personal channel preferences | — | low |
 | `channels/development/backlog.md` | Development backlog | — | low |
 | `channels/development/architecture.md` | System architecture notes | — | low |
+| `channels/development/security-log.md` | Security scan results from Caterpillar | — | high |
 
 ## Resources
 

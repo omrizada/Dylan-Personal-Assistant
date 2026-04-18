@@ -6,7 +6,7 @@ source: template
 
 # Feedback
 
-Corrections and calibration from {{USER_FIRST_NAME}}.
+Corrections and calibration from {{USER_FIRST_NAME}}. Related: [[patterns]] | [[strategies]] | [[communication]] | [[Dashboard]]
 
 ## Corrections
 

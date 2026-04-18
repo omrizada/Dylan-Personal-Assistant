@@ -6,6 +6,8 @@ source: template
 
 # System Architecture Notes
 
+Related: [[brain/channels/development/backlog|Backlog]] | [[decisions-log]] | [[Dashboard]]
+
 ## Current Setup
 <!-- Technical details about how the assistant system is configured -->
 

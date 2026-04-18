@@ -6,6 +6,8 @@ source: template
 
 # Document Style Preferences
 
+Related: [[communication]] | [[analysis-style]] | [[Dashboard]]
+
 ## Format Defaults
 
 | Setting | Value |

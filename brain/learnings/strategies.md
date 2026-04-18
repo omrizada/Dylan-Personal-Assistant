@@ -6,7 +6,7 @@ source: template
 
 # Strategies
 
-Strategies and frameworks that have been validated or rejected.
+Strategies and frameworks that have been validated or rejected. Related: [[patterns]] | [[feedback]] | [[decisions-log]] | [[Dashboard]]
 
 ## Validated Strategies
 

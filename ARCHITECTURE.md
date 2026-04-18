@@ -74,7 +74,8 @@ personal-assistant-template/
 │   ├── critic.md              # Devil's advocate agent
 │   ├── market-researcher.md   # External research agent
 │   ├── onboarding-coach.md    # Brain population agent
-│   └── librarian.md           # Knowledge management agent
+│   ├── librarian.md           # Knowledge management agent
+│   └── security-scanner.md   # Automated security scanning agent
 │
 ├── skills/                    # Slash command definitions
 │   ├── brief.md               # /brief — morning briefing
@@ -137,6 +138,57 @@ personal-assistant-template/
     └── setup.sh               # Interactive setup script
 ```
 
+## Brain Connectivity Design
+
+Every brain file MUST be connected to at least one other file via `[[wikilinks]]`. This ensures the knowledge graph has no orphan nodes and all information is discoverable through traversal.
+
+### Connection Rules
+1. **No orphans**: Every file links to at least one other file
+2. **Bidirectional awareness**: If A links to B, B should ideally link back to A
+3. **Hub files**: `Dashboard.md`, `BRAIN_INDEX.md`, and `projects.md` serve as high-connectivity hubs
+4. **Cross-domain links**: Work and Side Project files share connections through `role-and-goals.md` and `priorities.md`
+5. **Resource chains**: Summary → Insights → Projects → Stakeholders forms a natural chain
+
+### Life Domain Separation
+
+The brain supports multiple life domains that are separate but share fundamentals:
+
+```
+brain/
+├── context/          ← SHARED (role, goals, decisions apply everywhere)
+├── preferences/      ← SHARED (your style is consistent across domains)
+├── learnings/        ← SHARED (patterns transcend domains)
+├── channels/
+│   ├── work/         ← DOMAIN-SPECIFIC (primary job)
+│   ├── side-project/ ← DOMAIN-SPECIFIC (side hustle)
+│   ├── personal/     ← DOMAIN-SPECIFIC (life admin)
+│   └── development/  ← DOMAIN-SPECIFIC (system meta)
+└── resources/        ← MIXED (organized by source, linked to relevant domain)
+```
+
+**Shared fundamentals** (`context/`, `preferences/`, `learnings/`):
+- `role-and-goals.md` captures ALL roles (work + side project + personal)
+- `priorities.md` ranks across domains (work deadline vs personal commitment)
+- `communication.md` is your voice everywhere
+- `patterns.md` captures cross-domain insights
+
+**Domain-specific** (`channels/`):
+- Each domain has its own brain subdirectory
+- Account Managers only load their domain's files
+- Prevents context bleed (work context doesn't leak into personal)
+
+**Connection points** between domains:
+- `role-and-goals.md` is the master hub linking all domains
+- `priorities.md` enables cross-domain prioritization
+- `Dashboard.md` shows everything in one view
+- Resource insights can link across domains when relevant
+
+### Wikilink Conventions
+- Link to filename without extension: `[[projects]]`, `[[stakeholders]]`
+- For subdirectory files: `[[brain/channels/work/context|Work Context]]`
+- Use display names for clarity: `[[stakeholders|Jasmin Sarwan]]`
+- Add links naturally within existing text, not as separate "Related" sections
+
 ## The Brain
 
 The brain is a collection of markdown files that serve as the assistant's long-term memory. It has four layers:
@@ -183,7 +235,7 @@ Each Telegram topic maps to an Account Manager. The AM is the user-facing person
 - Escalates complex requests to the Chief of Staff
 - Adapts the response tone to match the channel personality
 
-### Specialist Agents (8)
+### Specialist Agents (9)
 
 | Agent | Expertise | Typical Triggers |
 |-------|-----------|-----------------|
@@ -195,6 +247,7 @@ Each Telegram topic maps to an Account Manager. The AM is the user-facing person
 | Market Researcher | External research, competitive intelligence | "research", "competitors", "benchmark" |
 | Onboarding Coach | Brain population, preference gathering | `/onboard`, weekly check-ins |
 | Librarian | Knowledge management, resource processing | `/ingest`, brain maintenance |
+| Security Scanner | Automated security scans via Caterpillar | Agent/skill/config file changes |
 
 ### Multi-Agent Workflows
 

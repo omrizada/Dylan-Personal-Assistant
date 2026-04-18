@@ -6,6 +6,8 @@ source: template
 
 # Development Backlog
 
+Related: [[brain/channels/development/architecture|Architecture]] | [[priorities]] | [[Dashboard]]
+
 ## Open Items
 
 | ID | Description | Priority | Status |

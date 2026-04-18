@@ -6,7 +6,7 @@ source: template
 
 # Patterns
 
-Recurring patterns observed in {{USER_FIRST_NAME}}'s work and decisions.
+Recurring patterns observed in {{USER_FIRST_NAME}}'s work and decisions. Related: [[feedback]] | [[strategies]] | [[decisions-log]] | [[Dashboard]]
 
 ## Observed Patterns
 

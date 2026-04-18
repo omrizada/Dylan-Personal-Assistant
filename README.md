@@ -1,12 +1,12 @@
 # AI Personal Assistant Team
 
-A multi-channel AI personal assistant system built on Claude Code. Deploy your own team of 13 specialized agents that manage different areas of your life through Telegram.
+A multi-channel AI personal assistant system built on Claude Code. Deploy your own team of 14 specialized agents that manage different areas of your life through Telegram.
 
 ## What Is This?
 
 A "clone and configure" template for a personal AI assistant that:
 - Operates through **5 Telegram channels** (topics in one group), each with a dedicated Account Manager
-- Has a **team of 8 specialist agents** (Analyst, Strategist, Writer, Critic, etc.) that work behind the scenes
+- Has a **team of 9 specialist agents** (Analyst, Strategist, Writer, Critic, etc.) that work behind the scenes
 - Maintains a **self-learning brain** of markdown files that grows smarter with every interaction
 - Supports **9 slash commands** (/brief, /analyze, /strategize, /draft, /challenge, /research, /ingest, /onboard, /learn)
 
@@ -32,6 +32,16 @@ Each channel has its own Account Manager with a distinct personality:
 - **Resource ingestion** — feed it documents and it extracts knowledge
 - **Weekly check-ins** — the system asks you questions to improve itself
 - **Graceful degradation** — works with reduced features if integrations are missing
+
+## Obsidian Integration
+
+Your brain folder works as an [Obsidian](https://obsidian.md) vault out of the box. Open it to get:
+- **Graph view** showing how all your knowledge connects
+- **Visual editing** of any brain file
+- **Dynamic dashboards** via Dataview plugin
+- **Mobile access** to your brain
+
+The setup wizard handles Obsidian configuration automatically.
 
 ## Quick Start
 

@@ -6,6 +6,8 @@ source: template
 
 # Personal Channel Preferences
 
+Related: [[priorities]] | [[role-and-goals]] | [[communication]] | [[Dashboard]]
+
 ## Recurring Items
 <!-- Regular personal tasks, appointments, reminders -->
 

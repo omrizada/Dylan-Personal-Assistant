@@ -6,7 +6,10 @@ source: template
 
 # Stakeholders
 
+See also: [[projects]] | [[role-and-goals]] | [[communication]] | [[Dashboard]]
+
 ## Key People
+<!-- Key people in your world. Link to [[projects]] they're involved in and [[decisions-log]] for decisions they influenced. -->
 
 | Name | Role | Organization | Relationship | What They Care About |
 |------|------|-------------|-------------|---------------------|

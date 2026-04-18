@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <!-- Fur gradients -->
+    <linearGradient id="fur-main" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E8C872"/>
+      <stop offset="40%" stop-color="#D4A843"/>
+      <stop offset="75%" stop-color="#C8963E"/>
+      <stop offset="100%" stop-color="#B8862D"/>
+    </linearGradient>
+    <linearGradient id="fur-light" x1="0%" y1="0%" x2="100%" y2="80%">
+      <stop offset="0%" stop-color="#F0D88A"/>
+      <stop offset="50%" stop-color="#E8C872"/>
+      <stop offset="100%" stop-color="#D4A843"/>
+    </linearGradient>
+    <linearGradient id="fur-warm" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#E8C872"/>
+      <stop offset="100%" stop-color="#C8963E"/>
+    </linearGradient>
+    <linearGradient id="fur-deep" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C8963E"/>
+      <stop offset="100%" stop-color="#A67628"/>
+    </linearGradient>
+    <linearGradient id="ear-left" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#D4A843"/>
+      <stop offset="60%" stop-color="#C8963E"/>
+      <stop offset="100%" stop-color="#A67628"/>
+    </linearGradient>
+    <linearGradient id="ear-right" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#C8963E"/>
+      <stop offset="50%" stop-color="#B8862D"/>
+      <stop offset="100%" stop-color="#A67628"/>
+    </linearGradient>
+    <linearGradient id="ear-inner" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#D4878F" opacity="0.3"/>
+      <stop offset="100%" stop-color="#C8963E" opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="chest-white" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="30%" stop-color="#FAF5E8"/>
+      <stop offset="70%" stop-color="#F0E6CC"/>
+      <stop offset="100%" stop-color="#E8D9B0"/>
+    </linearGradient>
+    <linearGradient id="snout-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#F5E8C0"/>
+      <stop offset="50%" stop-color="#F0DDA0"/>
+      <stop offset="100%" stop-color="#E8C872"/>
+    </linearGradient>
+    <radialGradient id="eye-left" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#8B6035"/>
+      <stop offset="40%" stop-color="#6B4423"/>
+      <stop offset="100%" stop-color="#3D2210"/>
+    </radialGradient>
+    <radialGradient id="eye-right" cx="40%" cy="35%" r="55%">
+      <stop offset="0%" stop-color="#8B6035"/>
+      <stop offset="40%" stop-color="#6B4423"/>
+      <stop offset="100%" stop-color="#3D2210"/>
+    </radialGradient>
+    <linearGradient id="nose-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#E0959D"/>
+      <stop offset="40%" stop-color="#D4878F"/>
+      <stop offset="100%" stop-color="#C07078"/>
+    </linearGradient>
+    <linearGradient id="tongue-grad" x1="50%" y1="0%" x2="50%" y2="100%">
+      <stop offset="0%" stop-color="#E88090"/>
+      <stop offset="50%" stop-color="#E06878"/>
+      <stop offset="100%" stop-color="#D05868"/>
+    </linearGradient>
+    <radialGradient id="cheek-glow-l" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F0D88A" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#E8C872" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="cheek-glow-r" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F0D88A" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#E8C872" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Fur texture filter -->
+    <filter id="fur-texture" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+
+  <!-- === BODY / CHEST === -->
+  <!-- White chest area -->
+  <path d="M58 155 C58 140 65 128 75 122 C82 118 92 116 100 116 C108 116 115 118 120 122 C128 128 133 138 134 155 C134 168 128 178 115 182 C108 184 93 184 86 182 C74 178 58 168 58 155Z" fill="url(#chest-white)" opacity="0.95"/>
+  <!-- Golden fur around chest -->
+  <path d="M48 160 C46 145 50 130 58 122 C53 128 50 140 52 155 C54 168 62 178 72 182 C65 180 55 172 48 160Z" fill="url(#fur-deep)" opacity="0.7"/>
+  <path d="M144 160 C146 145 142 130 134 122 C139 128 142 140 140 155 C138 168 130 178 120 182 C127 180 137 172 144 160Z" fill="url(#fur-deep)" opacity="0.6"/>
+
+  <!-- Fluffy chest fur strokes -->
+  <path d="M78 130 C82 135 80 142 76 148" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.5"/>
+  <path d="M85 126 C88 132 86 140 83 147" fill="none" stroke="#FFFFFF" stroke-width="1.2" opacity="0.45"/>
+  <path d="M93 124 C95 130 93 138 91 145" fill="none" stroke="#FAF5E8" stroke-width="1.3" opacity="0.5"/>
+  <path d="M102 123 C103 130 102 138 100 146" fill="none" stroke="#FAF5E8" stroke-width="1.2" opacity="0.45"/>
+  <path d="M110 125 C111 132 110 140 108 147" fill="none" stroke="#F0E6CC" stroke-width="1.3" opacity="0.4"/>
+  <path d="M118 128 C118 135 116 143 113 149" fill="none" stroke="#F0E6CC" stroke-width="1.2" opacity="0.35"/>
+
+  <!-- === LEFT EAR (behind head, floppy/folded) === -->
+  <path d="M38 72 C30 50 20 38 18 48 C15 58 18 72 24 84 C28 92 34 98 42 100 L48 88Z" fill="url(#ear-left)"/>
+  <path d="M34 60 C28 52 22 48 20 54 C18 62 22 74 28 84 C31 88 35 92 40 95" fill="url(#ear-inner)" opacity="0.6"/>
+  <!-- Ear fur texture -->
+  <path d="M28 58 C30 65 32 74 36 82" fill="none" stroke="#E8C872" stroke-width="1" opacity="0.4"/>
+  <path d="M24 62 C27 70 30 78 34 86" fill="none" stroke="#D4A843" stroke-width="0.8" opacity="0.35"/>
+  <path d="M32 55 C33 62 35 70 38 78" fill="none" stroke="#E8C872" stroke-width="0.7" opacity="0.3"/>
+
+  <!-- === RIGHT EAR (slightly forward, 3/4 view) === -->
+  <path d="M148 68 C154 46 162 34 164 44 C167 54 164 68 158 80 C154 88 148 94 140 96 L135 84Z" fill="url(#ear-right)"/>
+  <path d="M152 56 C157 48 162 44 163 50 C164 58 160 70 155 80 C152 85 148 90 143 93" fill="url(#ear-inner)" opacity="0.5"/>
+  <!-- Ear fur texture -->
+  <path d="M156 56 C154 64 151 72 148 80" fill="none" stroke="#E8C872" stroke-width="0.9" opacity="0.35"/>
+  <path d="M160 60 C157 68 154 76 150 84" fill="none" stroke="#D4A843" stroke-width="0.7" opacity="0.3"/>
+
+  <!-- === HEAD SHAPE (3/4 view, slightly left) === -->
+  <path d="M96 28 C74 28 52 44 44 66 C40 78 40 90 44 102 C48 114 58 128 68 138 C76 146 86 150 96 150 C108 150 118 146 126 138 C136 128 144 114 148 100 C152 88 152 76 148 64 C140 44 120 28 96 28Z" fill="url(#fur-main)"/>
+
+  <!-- Head fur overlay for depth -->
+  <path d="M96 30 C78 30 60 42 52 60 C48 70 46 82 48 94 C50 80 56 66 68 54 C78 44 90 38 102 38 C114 38 126 44 134 56 C140 64 144 76 144 88 C146 76 144 62 138 50 C130 38 114 30 96 30Z" fill="url(#fur-light)" opacity="0.5"/>
+
+  <!-- Forehead fur strokes -->
+  <path d="M68 48 C76 42 88 38 100 40" fill="none" stroke="#E8C872" stroke-width="1.5" opacity="0.4"/>
+  <path d="M62 56 C72 48 88 44 106 48" fill="none" stroke="#F0D88A" stroke-width="1.2" opacity="0.35"/>
+  <path d="M56 66 C66 58 84 52 108 56" fill="none" stroke="#E8C872" stroke-width="1" opacity="0.3"/>
+  <path d="M72 44 C80 40 92 38 104 40" fill="none" stroke="#F0D88A" stroke-width="0.8" opacity="0.25"/>
+
+  <!-- Fluffy cheek fur - left -->
+  <path d="M44 96 C48 106 54 116 62 124" fill="none" stroke="#E8C872" stroke-width="1.5" opacity="0.35"/>
+  <path d="M46 90 C50 100 56 112 64 120" fill="none" stroke="#D4A843" stroke-width="1.2" opacity="0.3"/>
+  <path d="M48 84 C52 94 58 106 66 116" fill="none" stroke="#E8C872" stroke-width="1" opacity="0.25"/>
+  <path d="M42 102 C46 110 52 120 60 128" fill="none" stroke="#D4A843" stroke-width="1.3" opacity="0.3"/>
+
+  <!-- Fluffy cheek fur - right -->
+  <path d="M148 92 C144 102 138 112 130 120" fill="none" stroke="#D4A843" stroke-width="1.3" opacity="0.3"/>
+  <path d="M146 86 C142 96 136 108 128 116" fill="none" stroke="#E8C872" stroke-width="1" opacity="0.25"/>
+  <path d="M144 98 C140 108 134 118 126 126" fill="none" stroke="#C8963E" stroke-width="1.2" opacity="0.3"/>
+
+  <!-- Fluffy neck/ruff fur -->
+  <path d="M52 110 C56 118 62 126 70 132" fill="none" stroke="#E8C872" stroke-width="1.8" opacity="0.3"/>
+  <path d="M56 114 C60 122 66 130 74 136" fill="none" stroke="#D4A843" stroke-width="1.5" opacity="0.25"/>
+  <path d="M140 108 C136 116 130 124 122 130" fill="none" stroke="#D4A843" stroke-width="1.6" opacity="0.28"/>
+  <path d="M136 112 C132 120 126 128 118 134" fill="none" stroke="#E8C872" stroke-width="1.3" opacity="0.22"/>
+
+  <!-- === SNOUT / MUZZLE === -->
+  <path d="M72 96 C72 86 82 78 96 78 C112 78 122 86 122 96 C122 108 114 118 96 122 C78 118 72 108 72 96Z" fill="url(#snout-grad)" opacity="0.75"/>
+  <!-- Lighter snout highlight -->
+  <path d="M78 92 C78 84 86 80 96 80 C106 80 116 84 116 92 C116 100 108 108 96 110 C84 108 78 100 78 92Z" fill="#F5E8C0" opacity="0.3"/>
+
+  <!-- Cheek glow -->
+  <ellipse cx="66" cy="100" rx="16" ry="14" fill="url(#cheek-glow-l)"/>
+  <ellipse cx="128" cy="98" rx="14" ry="13" fill="url(#cheek-glow-r)"/>
+
+  <!-- === EYES === -->
+  <!-- Left eye area shadow -->
+  <ellipse cx="76" cy="76" rx="15" ry="12" fill="#C8963E" opacity="0.25"/>
+  <!-- Right eye area shadow -->
+  <ellipse cx="120" cy="74" rx="14" ry="11" fill="#C8963E" opacity="0.2"/>
+
+  <!-- Left eye white -->
+  <ellipse cx="76" cy="76" rx="11" ry="10.5" fill="#FEFEFE"/>
+  <!-- Left eye iris -->
+  <ellipse cx="76" cy="76" rx="8.5" ry="9" fill="url(#eye-left)"/>
+  <!-- Left pupil -->
+  <ellipse cx="75" cy="75" rx="4" ry="4.5" fill="#1A0E06"/>
+  <!-- Left eye highlights -->
+  <ellipse cx="72" cy="72" rx="3" ry="3.5" fill="#fff" opacity="0.8"/>
+  <ellipse cx="79" cy="79" rx="1.5" ry="1.8" fill="#fff" opacity="0.35"/>
+
+  <!-- Right eye white -->
+  <ellipse cx="120" cy="74" rx="10" ry="10" fill="#FEFEFE"/>
+  <!-- Right eye iris -->
+  <ellipse cx="120" cy="74" rx="8" ry="8.5" fill="url(#eye-right)"/>
+  <!-- Right pupil -->
+  <ellipse cx="119" cy="73" rx="3.8" ry="4.2" fill="#1A0E06"/>
+  <!-- Right eye highlights -->
+  <ellipse cx="116" cy="70" rx="2.8" ry="3.2" fill="#fff" opacity="0.8"/>
+  <ellipse cx="123" cy="77" rx="1.3" ry="1.6" fill="#fff" opacity="0.35"/>
+
+  <!-- Happy squinting eye curves (slightly closed for happy expression) -->
+  <path d="M64 70 C68 66 72 65 76 65" fill="none" stroke="#C8963E" stroke-width="1.5" opacity="0.4"/>
+  <path d="M76 65 C80 65 84 67 88 70" fill="none" stroke="#C8963E" stroke-width="1.5" opacity="0.4"/>
+  <path d="M110 68 C114 65 118 64 120 64" fill="none" stroke="#C8963E" stroke-width="1.3" opacity="0.35"/>
+  <path d="M120 64 C123 64 126 66 130 68" fill="none" stroke="#C8963E" stroke-width="1.3" opacity="0.35"/>
+
+  <!-- Eyebrow hints -->
+  <path d="M62 66 C68 62 74 60 82 62" fill="none" stroke="#B8862D" stroke-width="2" opacity="0.35"/>
+  <path d="M112 60 C118 58 124 58 132 62" fill="none" stroke="#B8862D" stroke-width="1.8" opacity="0.3"/>
+
+  <!-- === NOSE === -->
+  <path d="M88 98 C88 92 92 88 98 88 C104 88 108 92 108 98 C108 104 104 108 98 108 C92 108 88 104 88 98Z" fill="url(#nose-grad)"/>
+  <!-- Nose shine -->
+  <ellipse cx="95" cy="95" rx="3.5" ry="2.5" fill="#F0A0A8" opacity="0.4"/>
+  <!-- Nostrils -->
+  <ellipse cx="93" cy="100" rx="2" ry="1.5" fill="#C07078" opacity="0.5"/>
+  <ellipse cx="103" cy="100" rx="2" ry="1.5" fill="#C07078" opacity="0.5"/>
+
+  <!-- === MOUTH === -->
+  <!-- Nose to mouth line -->
+  <path d="M98 108 L98 114" fill="none" stroke="#A06068" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+  <!-- Smile curves -->
+  <path d="M82 116 C86 122 92 124 98 114" fill="none" stroke="#A06068" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+  <path d="M98 114 C104 124 110 122 114 116" fill="none" stroke="#A06068" stroke-width="1.8" stroke-linecap="round" opacity="0.45"/>
+
+  <!-- === TONGUE (sticking out, happy panting) === -->
+  <path d="M88 118 C88 120 90 122 92 124 C94 128 94 136 96 140 C97 142 99 142 100 140 C102 136 102 128 104 124 C106 122 108 120 108 118 C106 116 100 115 98 115 C96 115 90 116 88 118Z" fill="url(#tongue-grad)"/>
+  <!-- Tongue center line -->
+  <path d="M98 118 C98 124 98 132 98 138" fill="none" stroke="#C85060" stroke-width="1" opacity="0.4"/>
+  <!-- Tongue highlight -->
+  <path d="M92 122 C93 126 94 132 96 136" fill="none" stroke="#F0A0B0" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- === ADDITIONAL FUR DETAIL === -->
+  <!-- Top of head fluffy tufts -->
+  <path d="M78 34 C84 30 92 28 98 30" fill="none" stroke="#F0D88A" stroke-width="1.8" opacity="0.4"/>
+  <path d="M88 30 C96 27 106 28 114 32" fill="none" stroke="#E8C872" stroke-width="1.5" opacity="0.35"/>
+  <path d="M82 32 C90 29 100 28 110 30" fill="none" stroke="#F0D88A" stroke-width="1" opacity="0.3"/>
+
+  <!-- Side fur tufts -->
+  <path d="M46 78 C44 82 44 88 46 92" fill="none" stroke="#E8C872" stroke-width="1.5" opacity="0.3"/>
+  <path d="M48 74 C46 80 46 86 48 90" fill="none" stroke="#D4A843" stroke-width="1.2" opacity="0.25"/>
+  <path d="M146 76 C148 80 148 86 146 90" fill="none" stroke="#D4A843" stroke-width="1.3" opacity="0.25"/>
+
+  <!-- Chin/jaw fur -->
+  <path d="M76 140 C82 146 92 148 100 148" fill="none" stroke="#E8C872" stroke-width="1.2" opacity="0.3"/>
+  <path d="M100 148 C108 148 118 146 124 140" fill="none" stroke="#D4A843" stroke-width="1" opacity="0.25"/>
+</svg>

@@ -6,6 +6,8 @@ source: template
 
 # Priorities
 
+Related: [[role-and-goals]] | [[projects]] | [[decisions-log]] | [[Dashboard]]
+
 ## Decision Weights
 
 | Factor | Weight | Notes |

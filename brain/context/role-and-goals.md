@@ -6,10 +6,12 @@ source: template
 
 # Role and Goals
 
+See also: [[projects]] | [[stakeholders]] | [[priorities]] | [[Dashboard]]
+
 ## Who is {{USER_NAME}}?
 
 ### Current Role
-<!-- Your job title and company. e.g., "VP Product at Acme Corp" -->
+<!-- Your job title and company. Link to [[projects]] for active work and [[stakeholders]] for key people. -->
 
 *Run /onboard to populate*
 

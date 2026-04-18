@@ -6,6 +6,8 @@ source: template
 
 # How {{USER_FIRST_NAME}} Likes Analysis Done
 
+Related: [[communication]] | [[document-style]] | [[priorities]] | [[Dashboard]]
+
 ## Frameworks
 
 | Framework | When to Use |

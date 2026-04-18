@@ -1,0 +1,1677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dylan Setup Wizard</title>
+<link rel="icon" type="image/png" href="logo.png">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --text: #1a1a1a;
+  --text-secondary: #666;
+  --text-tertiary: #999;
+  --bg: #ffffff;
+  --border: #e5e5e5;
+  --border-light: #f0f0f0;
+  --golden: #D4A843;
+  --golden-light: #F5ECD7;
+  --green: #22c55e;
+  --yellow: #eab308;
+  --red: #ef4444;
+  --radius: 12px;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --mono: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+}
+
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+/* --- Level Visibility --- */
+body.beginner .intermediate-only,
+body.beginner .expert-only,
+body.intermediate .beginner-only,
+body.intermediate .expert-only,
+body.expert .beginner-only,
+body.expert .intermediate-only {
+  display: none !important;
+}
+body:not(.beginner):not(.intermediate):not(.expert) .beginner-only,
+body:not(.beginner):not(.intermediate):not(.expert) .expert-only {
+  display: none !important;
+}
+
+/* --- Progress Bar --- */
+.progress-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--border-light);
+  height: 3px;
+}
+#progress-bar {
+  height: 100%;
+  background: var(--golden);
+  width: 0%;
+  transition: width 0.4s ease;
+}
+.step-counter {
+  position: fixed;
+  top: 8px;
+  right: 16px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  z-index: 101;
+}
+
+/* --- Container --- */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  padding-top: 40px;
+  min-height: 100vh;
+}
+
+/* --- Typography --- */
+h1 { font-size: 28px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+h2 { font-size: 22px; font-weight: 600; margin-bottom: 12px; color: var(--text); }
+h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+p { color: var(--text-secondary); margin-bottom: 16px; }
+p.hint { font-size: 13px; color: var(--text-tertiary); margin-bottom: 8px; }
+p.tagline { font-size: 17px; color: #777; margin-bottom: 24px; }
+
+/* --- Inputs --- */
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  color: var(--text);
+  background: var(--bg);
+}
+input[type="text"]:focus, input[type="password"]:focus {
+  border-color: var(--golden);
+  box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.12);
+}
+input::placeholder { color: #bbb; }
+
+/* --- Buttons --- */
+button.primary {
+  background: var(--text);
+  color: #fff;
+  border: none;
+  padding: 14px 36px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+}
+button.primary:hover { opacity: 0.85; }
+button.primary:active { transform: scale(0.98); }
+button.primary:disabled { opacity: 0.35; cursor: default; }
+
+button.secondary {
+  background: none;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+button.secondary:hover { border-color: #bbb; color: #333; }
+
+button.ghost {
+  background: none;
+  border: none;
+  color: var(--golden);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 4px 8px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.button-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 32px;
+}
+
+/* --- Steps --- */
+.step { display: none; }
+.step.active { display: block; animation: fadeIn 0.25s ease; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Fields --- */
+.field { margin-bottom: 20px; }
+.field label {
+  display: block;
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.field-hint {
+  font-size: 13px;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+  margin-bottom: 0;
+}
+
+/* --- Level Cards --- */
+.level-cards {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+.level-card {
+  flex: 1;
+  border: 2px solid #e8e8e8;
+  border-radius: 14px;
+  padding: 24px 18px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  background: var(--bg);
+}
+.level-card:hover {
+  border-color: #ccc;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.level-card.selected {
+  border-color: var(--golden);
+  box-shadow: 0 0 0 3px rgba(212, 168, 67, 0.15);
+}
+.level-card .level-icon { font-size: 32px; margin-bottom: 12px; }
+.level-card .level-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.level-card .level-desc { font-size: 13px; color: #888; line-height: 1.4; }
+
+/* --- Status Dots --- */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+.status-dot.success { background: var(--green); }
+.status-dot.progress { background: var(--golden); animation: pulse 1.5s ease-in-out infinite; }
+.status-dot.error { background: var(--red); }
+.status-dot.pending { background: #e0e0e0; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* --- Check Row --- */
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  margin-bottom: 20px;
+}
+.check-row .check-label {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+/* --- Command Block --- */
+.cmd-block {
+  background: var(--text);
+  color: #e0e0e0;
+  padding: 16px 20px;
+  border-radius: 10px;
+  font-family: var(--mono);
+  font-size: 13px;
+  position: relative;
+  margin: 16px 0;
+  line-height: 1.8;
+  overflow-x: auto;
+  padding-right: 70px;
+}
+.cmd-block code {
+  background: none;
+  padding: 0;
+  color: #e0e0e0;
+  font-size: 13px;
+  font-family: var(--mono);
+}
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255,255,255,0.1);
+  border: none;
+  color: #999;
+  padding: 4px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.copy-btn:hover { background: rgba(255,255,255,0.2); }
+
+/* --- Inline Code --- */
+code {
+  background: #f0ede4;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-family: var(--mono);
+  color: #8B6914;
+}
+
+/* --- Toggle --- */
+.toggle-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  cursor: pointer;
+  user-select: none;
+}
+.toggle-track {
+  width: 44px;
+  height: 24px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.toggle-track.on { background: var(--golden); }
+.toggle-thumb {
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+}
+.toggle-track.on .toggle-thumb { transform: translateX(20px); }
+.toggle-label { font-size: 15px; color: var(--text); }
+
+/* --- Optional Section --- */
+.optional-section {
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  max-height: 0;
+  opacity: 0;
+}
+.optional-section.open { max-height: 8000px; opacity: 1; }
+
+/* --- Expandable (details/summary) --- */
+details.expandable {
+  margin-bottom: 16px;
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  overflow: hidden;
+}
+details.expandable summary {
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--golden);
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: background 0.2s;
+}
+details.expandable summary::-webkit-details-marker { display: none; }
+details.expandable summary::before {
+  content: '\25B6';
+  display: inline-block;
+  margin-right: 8px;
+  font-size: 10px;
+  transition: transform 0.2s;
+}
+details.expandable[open] summary::before { transform: rotate(90deg); }
+details.expandable summary:hover { background: rgba(212, 168, 67, 0.06); }
+.expandable-content {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  border-top: 1px solid var(--border-light);
+  background: #faf9f6;
+}
+
+/* --- Callout --- */
+.callout {
+  padding: 14px 18px;
+  border-radius: 8px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.callout.warning {
+  background: #FDF8EC;
+  border-left: 3px solid var(--golden);
+  color: var(--text-secondary);
+}
+.callout.warning strong { color: var(--text); }
+.callout.info {
+  background: #f0f7ff;
+  border-left: 3px solid #3b82f6;
+  color: var(--text-secondary);
+}
+
+/* --- Substep Card --- */
+.substep-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+.substep-card h3 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.substep-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--golden);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* --- Summary --- */
+.summary-section { margin-bottom: 20px; }
+.summary-section h3 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 8px;
+}
+.summary-value { font-size: 15px; color: var(--text); padding: 4px 0; }
+
+/* --- File List --- */
+.file-list { font-size: 13px; font-family: var(--mono); }
+.file-item {
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f5f5f5;
+}
+.file-item:last-child { border-bottom: none; }
+
+/* --- Topic Grid --- */
+.topic-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.topic-grid .field { margin-bottom: 0; }
+
+/* --- Divider --- */
+.divider { height: 1px; background: var(--border-light); margin: 28px 0; }
+
+/* --- Link --- */
+.link { color: var(--golden); text-decoration: underline; text-underline-offset: 2px; }
+.link:hover { color: #B8862D; }
+
+/* --- Tip Box --- */
+.tip {
+  background: #FDF8EC;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 24px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  border-left: 3px solid var(--golden);
+}
+.tip strong { color: var(--text); }
+
+/* --- Welcome Logo --- */
+.welcome-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+.welcome-logo img { width: 120px; height: 120px; }
+
+/* --- Small Logo --- */
+.logo-small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.logo-small img { width: 28px; height: 28px; }
+.logo-small span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #B8862D;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* --- Completion Logo --- */
+.completion-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.completion-logo img { width: 100px; height: 100px; }
+
+/* --- Illustration --- */
+.illustration {
+  margin: 16px 0;
+  display: flex;
+  justify-content: center;
+}
+.illustration svg {
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+/* --- Links Row --- */
+.links-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+.links-row a {
+  font-size: 14px;
+  color: var(--golden);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* --- Apply Progress --- */
+.apply-progress { margin-top: 24px; }
+
+/* --- Ordered/Unordered Lists --- */
+.step ol, .step ul {
+  font-size: 14px;
+  color: var(--text-secondary);
+  padding-left: 20px;
+  margin-bottom: 16px;
+}
+.step ol li, .step ul li { margin-bottom: 6px; }
+
+/* --- Responsive --- */
+@media (max-width: 600px) {
+  .level-cards { flex-direction: column; }
+  .level-card { padding: 18px 16px; }
+  .topic-grid { grid-template-columns: 1fr; }
+  .container { padding: 32px 16px; padding-top: 36px; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  button.primary { width: 100%; }
+  button.secondary { flex-shrink: 0; }
+  .substep-card { padding: 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div class="progress-wrapper">
+  <div id="progress-bar"></div>
+</div>
+<div class="step-counter" id="step-counter"></div>
+
+<div class="container">
+
+  <!-- Small Logo (shown on inner steps) -->
+  <div class="logo-small" id="logo-small" style="display:none;">
+    <img src="logo.png" style="border-radius: 50%; object-fit: cover;" alt="Dylan">
+    <span>Dylan</span>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 1: Welcome                                               -->
+  <!-- ============================================================ -->
+  <div class="step active" id="step-1">
+    <div class="welcome-logo">
+      <img src="logo.png" style="border-radius: 50%; object-fit: cover;" alt="Dylan">
+    </div>
+    <h1 style="text-align:center;">Welcome to Dylan</h1>
+    <p class="tagline" style="text-align:center;">Your AI Personal Assistant Team</p>
+    <p style="text-align:center; color:#888; font-size:14px;">Setup takes about 10-15 minutes. Dylan will guide you through everything.</p>
+    <div class="button-row" style="justify-content:center; margin-top:40px;">
+      <button class="primary" onclick="goToStep(2)">Get Started</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 2: Choose Your Level                                     -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-2">
+    <h2>How much help do you need?</h2>
+    <p>This controls how much explanation you see at each step.</p>
+    <div class="level-cards">
+      <div class="level-card" id="level-beginner" onclick="selectLevel('beginner')">
+        <div class="level-icon">&#127793;</div>
+        <div class="level-title">Guide me through everything</div>
+        <div class="level-desc">I'm new to terminals and bots. Explain every step.</div>
+      </div>
+      <div class="level-card" id="level-intermediate" onclick="selectLevel('intermediate')">
+        <div class="level-icon">&#128295;</div>
+        <div class="level-title">I know the basics</div>
+        <div class="level-desc">I've used a terminal before. Just the key steps.</div>
+      </div>
+      <div class="level-card" id="level-expert" onclick="selectLevel('expert')">
+        <div class="level-icon">&#9889;</div>
+        <div class="level-title">I'm a developer</div>
+        <div class="level-desc">Just give me the commands.</div>
+      </div>
+    </div>
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(1)">Back</button>
+      <button class="primary" id="step2Next" disabled onclick="goToStep(3)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 3: Your Name                                             -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-3">
+    <h2>What should Dylan call you?</h2>
+    <p class="beginner-only">Dylan uses your name to personalize all responses. Your first name appears in agent prompts so Dylan addresses you naturally.</p>
+    <p class="intermediate-only">Personalizes agent definitions and response tone.</p>
+    <div class="field">
+      <label>Full name</label>
+      <input type="text" id="fullName" placeholder="e.g. Jane Smith" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>First name</label>
+      <input type="text" id="firstName" placeholder="e.g. Jane" autocomplete="given-name">
+      <p class="field-hint beginner-only">This is how Dylan will address you in conversation.</p>
+    </div>
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(2)">Back</button>
+      <button class="primary" onclick="validateNameAndContinue()">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 4: Install Homebrew                                      -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-4">
+    <h2>Install Homebrew</h2>
+    <p class="beginner-only">Homebrew is a tool that makes installing other software on your Mac easy. Think of it as an App Store for developer tools, but in your terminal.</p>
+    <p class="intermediate-only">Mac package manager. Required for installing Node.js and Python.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Package manager check.</p>
+
+    <div class="check-row" id="check-brew">
+      <span class="status-dot pending" id="dep-brew-dot"></span>
+      <span id="dep-brew-status">Checking...</span>
+      <span class="check-label" id="dep-brew-label"></span>
+      <button class="ghost" onclick="checkSingleDep('brew')" style="margin-left:auto;">Check Again</button>
+    </div>
+
+    <div id="brew-install-instructions" style="display:none;">
+      <div class="beginner-only">
+        <details class="expandable">
+          <summary>What is a terminal?</summary>
+          <div class="expandable-content">
+            <p style="margin-bottom:12px;">A terminal is a text-based way to interact with your Mac. To open it:</p>
+            <ol>
+              <li>Press <strong>Cmd + Space</strong> to open Spotlight</li>
+              <li>Type <strong>Terminal</strong></li>
+              <li>Press <strong>Enter</strong></li>
+            </ol>
+            <!-- Spotlight illustration -->
+            <div class="illustration" style="margin-top:12px;">
+              <svg width="340" height="60" viewBox="0 0 340 60">
+                <rect x="0" y="0" width="340" height="60" rx="12" fill="#f0f0f0" stroke="#e5e5e5" stroke-width="1"/>
+                <circle cx="24" cy="30" r="10" fill="none" stroke="#999" stroke-width="1.5"/>
+                <line x1="31" y1="37" x2="36" y2="42" stroke="#999" stroke-width="1.5" stroke-linecap="round"/>
+                <text x="48" y="35" font-family="system-ui" font-size="15" fill="#1a1a1a">Terminal</text>
+                <rect x="48" y="22" width="0" height="20" fill="#D4A843" opacity="0.5">
+                  <animate attributeName="width" values="0;58;58;0" dur="2s" repeatCount="indefinite"/>
+                </rect>
+              </svg>
+            </div>
+            <p style="margin-top:12px;">You'll see a window with a blinking cursor. This is where you'll paste commands.</p>
+          </div>
+        </details>
+      </div>
+
+      <h3 style="margin-top:16px;">Step 1: Install Xcode Command Line Tools</h3>
+      <div class="cmd-block">
+        <code id="cmd-xcode">xcode-select --install</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="beginner-only hint">A dialog will pop up. Click <strong>Install</strong>, then <strong>Agree</strong>. Wait 5-15 minutes for it to finish.</p>
+
+      <h3 style="margin-top:20px;">Step 2: Install Homebrew</h3>
+      <div class="cmd-block">
+        <code id="cmd-brew">/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="beginner-only hint">You'll be asked for your Mac password. When you type it, <strong>nothing appears on screen</strong> -- this is normal! Just type your password and press Enter.</p>
+
+      <h3 style="margin-top:20px;">Step 3: Add Homebrew to your PATH</h3>
+      <p class="beginner-only hint" style="margin-bottom:4px;">Not sure which Mac you have? Click the Apple menu at top-left, then <strong>About This Mac</strong>. If it says M1, M2, M3, or M4, you have Apple Silicon.</p>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;"><strong>Apple Silicon</strong> (M1/M2/M3/M4):</p>
+      <div class="cmd-block">
+        <code id="cmd-brew-path-arm">echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile && eval "$(/opt/homebrew/bin/brew shellenv)"</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p style="font-size:14px; color:var(--text-secondary); margin-bottom:8px;"><strong>Intel Mac</strong>:</p>
+      <div class="cmd-block">
+        <code id="cmd-brew-path-intel">echo 'eval "$(/usr/local/bin/brew shellenv)"' >> ~/.zprofile && eval "$(/usr/local/bin/brew shellenv)"</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+
+      <details class="expandable" style="margin-top:16px;">
+        <summary>Common errors</summary>
+        <div class="expandable-content">
+          <p><strong>"Permission denied"</strong> -- Try running with <code>sudo</code> or check that you own the /usr/local directory.</p>
+          <p style="margin-top:8px;"><strong>"Command not found: brew"</strong> -- You need to add Homebrew to your PATH (Step 3 above). Try closing and reopening your terminal.</p>
+          <p style="margin-top:8px;"><strong>"Already installed"</strong> -- That's fine! Run <code>brew update</code> to get the latest version.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(3)">Back</button>
+      <button class="primary" onclick="goToStep(5)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 5: Install Node.js                                       -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-5">
+    <h2>Install Node.js</h2>
+    <p class="beginner-only">Node.js is a tool that Claude Code needs to run. You won't interact with it directly.</p>
+    <p class="intermediate-only">Required runtime for Claude Code.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Node.js check.</p>
+
+    <div class="check-row" id="check-node">
+      <span class="status-dot pending" id="dep-node-dot"></span>
+      <span id="dep-node-status">Checking...</span>
+      <span class="check-label" id="dep-node-label"></span>
+      <button class="ghost" onclick="checkSingleDep('node')" style="margin-left:auto;">Check Again</button>
+    </div>
+
+    <div id="node-install-instructions" style="display:none;">
+      <div class="cmd-block">
+        <code id="cmd-node">brew install node</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="hint">Verify installation:</p>
+      <div class="cmd-block">
+        <code id="cmd-node-ver">node --version && npm --version</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(4)">Back</button>
+      <button class="primary" onclick="goToStep(6)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 6: Install Python 3                                      -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-6">
+    <h2>Python 3</h2>
+    <p class="beginner-only">Python is a programming language Dylan uses behind the scenes for some setup scripts. It's usually already installed on Mac.</p>
+    <p class="intermediate-only">Required for backend setup scripts.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Python 3 check.</p>
+
+    <div class="check-row" id="check-python">
+      <span class="status-dot pending" id="dep-python-dot"></span>
+      <span id="dep-python-status">Checking...</span>
+      <span class="check-label" id="dep-python-label"></span>
+      <button class="ghost" onclick="checkSingleDep('python')" style="margin-left:auto;">Check Again</button>
+    </div>
+
+    <div id="python-install-instructions" style="display:none;">
+      <div class="cmd-block">
+        <code id="cmd-python">brew install python3</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="hint">Or download from <a href="https://www.python.org/downloads/" target="_blank" class="link">python.org</a></p>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(5)">Back</button>
+      <button class="primary" onclick="goToStep(7)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 7: Install Claude Code                                   -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-7">
+    <h2>Install Claude Code</h2>
+    <p class="beginner-only">Claude Code is the AI engine that powers Dylan. It's made by Anthropic -- the same company behind Claude.</p>
+    <p class="intermediate-only">The AI engine powering Dylan. Requires a Claude Pro or Max subscription.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Claude Code CLI.</p>
+
+    <div class="check-row" id="check-claude">
+      <span class="status-dot pending" id="dep-claude-dot"></span>
+      <span id="dep-claude-status">Checking...</span>
+      <span class="check-label" id="dep-claude-label"></span>
+      <button class="ghost" onclick="checkSingleDep('claude')" style="margin-left:auto;">Check Again</button>
+    </div>
+
+    <div id="claude-install-instructions" style="display:none;">
+      <div class="callout warning beginner-only">
+        <strong>Subscription required:</strong> You need a <a href="https://claude.ai" target="_blank" class="link">Claude Pro</a> ($20/month) or Claude Max subscription. The free plan does not include Claude Code.
+      </div>
+
+      <div class="cmd-block">
+        <code id="cmd-claude">curl -fsSL https://claude.ai/install.sh | bash</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+
+      <div class="beginner-only">
+        <p class="hint">After installation, you may need to restart your terminal or run:</p>
+        <div class="cmd-block">
+          <code id="cmd-claude-path">export PATH="$HOME/.local/bin:$PATH"</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+
+        <!-- Terminal illustration -->
+        <div class="illustration">
+          <svg width="380" height="140" viewBox="0 0 380 140">
+            <rect x="0" y="0" width="380" height="140" rx="10" fill="#1a1a1a"/>
+            <circle cx="16" cy="14" r="5" fill="#ff5f57"/>
+            <circle cx="32" cy="14" r="5" fill="#febc2e"/>
+            <circle cx="48" cy="14" r="5" fill="#28c840"/>
+            <rect x="0" y="26" width="380" height="1" fill="#333"/>
+            <text x="16" y="52" font-family="monospace" font-size="12" fill="#22c55e">$</text>
+            <text x="28" y="52" font-family="monospace" font-size="12" fill="#e0e0e0">curl -fsSL https://claude.ai/install.sh | bash</text>
+            <text x="16" y="76" font-family="monospace" font-size="11" fill="#666">Installing Claude Code...</text>
+            <text x="16" y="96" font-family="monospace" font-size="11" fill="#22c55e">&#10003; Successfully installed</text>
+            <rect x="16" y="112" width="8" height="14" fill="#D4A843" opacity="0.8">
+              <animate attributeName="opacity" values="0.8;0.2;0.8" dur="1.2s" repeatCount="indefinite"/>
+            </rect>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div id="claude-auth-instructions" style="display:none;">
+      <div class="divider"></div>
+      <h3>Authenticate Claude Code</h3>
+      <p>Run <code>claude</code> in your terminal. A browser window will open for you to sign in.</p>
+      <div class="cmd-block">
+        <code id="cmd-claude-auth">claude</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="beginner-only hint">After signing in, close the browser tab and return to this wizard.</p>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(6)">Back</button>
+      <button class="primary" onclick="goToStep(8)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 8: Install Bun                                           -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-8">
+    <h2>Install Bun</h2>
+    <p class="beginner-only">Bun is a fast JavaScript runtime that the Telegram plugin needs to work.</p>
+    <p class="intermediate-only">Fast JS runtime needed by the Telegram plugin.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Bun runtime.</p>
+
+    <div class="check-row" id="check-bun">
+      <span class="status-dot pending" id="dep-bun-dot"></span>
+      <span id="dep-bun-status">Checking...</span>
+      <span class="check-label" id="dep-bun-label"></span>
+      <button class="ghost" onclick="checkSingleDep('bun')" style="margin-left:auto;">Check Again</button>
+    </div>
+
+    <div id="bun-install-instructions" style="display:none;">
+      <div class="cmd-block">
+        <code id="cmd-bun">curl -fsSL https://bun.sh/install | bash</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+      <p class="beginner-only hint">After installation, restart your terminal or run <code>source ~/.zshrc</code></p>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(7)">Back</button>
+      <button class="primary" onclick="goToStep(9)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 9: Install Obsidian (optional)                           -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-9">
+    <h2>Install Obsidian</h2>
+    <p class="beginner-only">Obsidian is a free app that lets you visually browse Dylan's brain -- the knowledge files that make Dylan smart. It shows a beautiful graph of how everything connects.</p>
+    <p class="intermediate-only">Optional but recommended. Visual browser for Dylan's brain files.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Optional. Brain viewer.</p>
+
+    <div class="toggle-wrapper" onclick="toggleObsidian()">
+      <div class="toggle-track on" id="obsidianToggle">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label" id="obsidianToggleLabel">Install Obsidian (recommended)</span>
+    </div>
+
+    <div class="optional-section open" id="obsidianSection">
+      <div class="check-row" id="check-obsidian">
+        <span class="status-dot pending" id="dep-obsidian-dot"></span>
+        <span id="dep-obsidian-status">Checking...</span>
+        <span class="check-label" id="dep-obsidian-label"></span>
+        <button class="ghost" onclick="checkSingleDep('obsidian')" style="margin-left:auto;">Check Again</button>
+      </div>
+
+      <div id="obsidian-install-instructions" style="display:none;">
+        <div class="cmd-block">
+          <code id="cmd-obsidian">brew install --cask obsidian</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p class="hint">Or download from <a href="https://obsidian.md" target="_blank" class="link">obsidian.md</a></p>
+      </div>
+
+      <p class="beginner-only" style="font-size:14px; color:#888; margin-top:12px;">We'll set up the Obsidian vault after everything else is configured.</p>
+
+      <!-- Obsidian graph illustration -->
+      <div class="beginner-only">
+        <div class="illustration">
+          <svg width="320" height="200" viewBox="0 0 320 200">
+            <rect x="0" y="0" width="320" height="200" rx="10" fill="#1e1e1e"/>
+            <circle cx="160" cy="100" r="18" fill="#D4A843" opacity="0.9"/>
+            <text x="160" y="104" font-family="system-ui" font-size="8" fill="#fff" text-anchor="middle">Brain</text>
+            <circle cx="80" cy="60" r="12" fill="#D4A843" opacity="0.5"/>
+            <text x="80" y="63" font-family="system-ui" font-size="7" fill="#fff" text-anchor="middle">Goals</text>
+            <circle cx="240" cy="70" r="14" fill="#D4A843" opacity="0.6"/>
+            <text x="240" y="73" font-family="system-ui" font-size="7" fill="#fff" text-anchor="middle">Projects</text>
+            <circle cx="100" cy="150" r="11" fill="#D4A843" opacity="0.45"/>
+            <text x="100" y="153" font-family="system-ui" font-size="7" fill="#fff" text-anchor="middle">People</text>
+            <circle cx="220" cy="145" r="13" fill="#D4A843" opacity="0.55"/>
+            <text x="220" y="148" font-family="system-ui" font-size="7" fill="#fff" text-anchor="middle">Decisions</text>
+            <circle cx="50" cy="120" r="9" fill="#D4A843" opacity="0.35"/>
+            <text x="50" y="123" font-family="system-ui" font-size="6" fill="#fff" text-anchor="middle">Prefs</text>
+            <line x1="160" y1="100" x2="80" y2="60" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
+            <line x1="160" y1="100" x2="240" y2="70" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
+            <line x1="160" y1="100" x2="100" y2="150" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
+            <line x1="160" y1="100" x2="220" y2="145" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
+            <line x1="160" y1="100" x2="50" y2="120" stroke="#D4A843" stroke-width="1" opacity="0.3"/>
+            <line x1="80" y1="60" x2="50" y2="120" stroke="#D4A843" stroke-width="0.6" opacity="0.2"/>
+            <line x1="240" y1="70" x2="220" y2="145" stroke="#D4A843" stroke-width="0.6" opacity="0.2"/>
+            <line x1="100" y1="150" x2="220" y2="145" stroke="#D4A843" stroke-width="0.6" opacity="0.15"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(8)">Back</button>
+      <button class="primary" onclick="goToStep(10)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 10: Set Up Telegram (optional)                           -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-10">
+    <h2>Set Up Telegram</h2>
+    <p class="beginner-only">Telegram lets you message Dylan from your phone, like texting a friend. You can skip this and use the terminal instead.</p>
+    <p class="intermediate-only">Connect Telegram to message Dylan from anywhere. Optional but recommended.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Optional Telegram integration.</p>
+
+    <div class="toggle-wrapper" onclick="toggleTelegram()">
+      <div class="toggle-track on" id="telegramToggle">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label" id="telegramToggleLabel">Connect via Telegram (recommended)</span>
+    </div>
+
+    <div class="optional-section open" id="telegramSection">
+      <div class="divider"></div>
+
+      <!-- 10a: Create a bot -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">A</span> Create a bot</h3>
+        <p style="font-size:14px;">Open Telegram and search for <a href="https://t.me/BotFather" target="_blank" class="link">@BotFather</a></p>
+
+        <div class="beginner-only">
+          <!-- BotFather search illustration -->
+          <div class="illustration">
+            <svg width="320" height="120" viewBox="0 0 320 120">
+              <rect x="0" y="0" width="320" height="120" rx="10" fill="#fff" stroke="#e5e5e5" stroke-width="1"/>
+              <rect x="16" y="12" width="288" height="36" rx="18" fill="#f0f0f0"/>
+              <text x="32" y="35" font-family="system-ui" font-size="13" fill="#1a1a1a">@BotFather</text>
+              <text x="278" y="35" font-family="system-ui" font-size="14" fill="#999">&#128269;</text>
+              <rect x="16" y="60" width="288" height="48" rx="8" fill="#faf9f6"/>
+              <circle cx="44" cy="84" r="16" fill="#D4A843"/>
+              <text x="44" y="88" font-family="system-ui" font-size="12" fill="#fff" text-anchor="middle">B</text>
+              <text x="70" y="80" font-family="system-ui" font-size="13" fill="#1a1a1a" font-weight="600">BotFather</text>
+              <text x="70" y="96" font-family="system-ui" font-size="11" fill="#888">Official Telegram bot manager</text>
+            </svg>
+          </div>
+        </div>
+
+        <ol>
+          <li>Send <code>/newbot</code></li>
+          <li>BotFather asks: "How are we going to call it?" -- type a name like <code>Dylan Assistant</code></li>
+          <li>BotFather asks for a username -- type something ending in <code>bot</code>, like <code>dylan_helper_bot</code></li>
+          <li>BotFather gives you a token. It looks like: <code>1234567890:ABCdef...</code></li>
+        </ol>
+
+        <div class="beginner-only">
+          <!-- BotFather token illustration -->
+          <div class="illustration">
+            <svg width="320" height="110" viewBox="0 0 320 110">
+              <rect x="0" y="0" width="320" height="110" rx="10" fill="#fff" stroke="#e5e5e5" stroke-width="1"/>
+              <rect x="16" y="12" width="260" height="80" rx="10" fill="#f0f0f0"/>
+              <text x="28" y="32" font-family="system-ui" font-size="11" fill="#555">Done! Your new bot is created.</text>
+              <text x="28" y="50" font-family="system-ui" font-size="11" fill="#555">Use this token to access the API:</text>
+              <rect x="28" y="58" width="230" height="24" rx="4" fill="#D4A843" opacity="0.15"/>
+              <text x="36" y="74" font-family="monospace" font-size="10" fill="#B8862D">123456789:ABCdefGhIjKlMnOpQrStUv</text>
+              <polygon points="24,92 32,92 24,100" fill="#f0f0f0"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Bot Token</label>
+          <input type="text" id="botToken" placeholder="e.g., 1234567890:ABCdef...">
+          <p class="field-hint beginner-only">You got this from BotFather in the previous step.</p>
+        </div>
+        <div class="field">
+          <label>Bot username (without @)</label>
+          <input type="text" id="botUsername" placeholder="e.g. dylan_helper_bot">
+        </div>
+        <p class="beginner-only hint">Treat this token like a password. Don't share it publicly.</p>
+      </div>
+
+      <!-- 10b: Turn off Group Privacy -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">B</span> Turn off Group Privacy</h3>
+        <p class="beginner-only" style="font-size:14px;">By default, bots can't read messages in groups. We need to change this so Dylan can see your messages.</p>
+        <ol>
+          <li>In your BotFather chat, send <code>/setprivacy</code></li>
+          <li>Select your bot</li>
+          <li>Tap <strong>Disable</strong></li>
+          <li>BotFather confirms: "Success! The new status is: DISABLED."</li>
+        </ol>
+        <div class="callout warning">
+          <strong>Important:</strong> If you skip this step, Dylan won't be able to read your messages in the group.
+        </div>
+      </div>
+
+      <!-- 10c: Create a Forum group -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">C</span> Create a Forum group</h3>
+        <ol>
+          <li>In Telegram, create a new Group</li>
+          <li class="beginner-only">Tap the pencil/compose icon, then <strong>New Group</strong></li>
+          <li>Name it (e.g., "Dylan HQ")</li>
+          <li>Go to Group Settings, then Edit, then enable <strong>Topics</strong></li>
+        </ol>
+
+        <div class="beginner-only">
+          <!-- Group Settings illustration -->
+          <div class="illustration">
+            <svg width="280" height="100" viewBox="0 0 280 100">
+              <rect x="0" y="0" width="280" height="100" rx="10" fill="#fff" stroke="#e5e5e5" stroke-width="1"/>
+              <text x="16" y="28" font-family="system-ui" font-size="13" fill="#1a1a1a" font-weight="600">Group Settings</text>
+              <line x1="16" y1="38" x2="264" y2="38" stroke="#f0f0f0" stroke-width="1"/>
+              <text x="16" y="60" font-family="system-ui" font-size="13" fill="#555">Topics</text>
+              <rect x="220" y="48" width="36" height="20" rx="10" fill="#D4A843"/>
+              <circle cx="242" cy="58" r="8" fill="#fff"/>
+              <line x1="16" y1="72" x2="264" y2="72" stroke="#f0f0f0" stroke-width="1"/>
+              <text x="16" y="90" font-family="system-ui" font-size="12" fill="#D4A843">+ Create Topic</text>
+            </svg>
+          </div>
+        </div>
+
+        <p style="font-size:14px; margin-top:12px;">Create these 5 topics:</p>
+        <ul style="list-style:none; padding-left:0;">
+          <li style="padding:4px 0;">&#128188; <strong>Work</strong></li>
+          <li style="padding:4px 0;">&#128640; <strong>Side Project</strong></li>
+          <li style="padding:4px 0;">&#127968; <strong>Personal</strong></li>
+          <li style="padding:4px 0;">&#128172; <strong>General</strong></li>
+          <li style="padding:4px 0;">&#128736; <strong>Development</strong></li>
+        </ul>
+      </div>
+
+      <!-- 10d: Add bot and make admin -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">D</span> Add bot and make admin</h3>
+        <ol>
+          <li>Add your bot to the group (search for its username)</li>
+          <li>Go to Group Info, then <strong>Administrators</strong>, then add your bot as admin</li>
+        </ol>
+        <p class="beginner-only hint">The bot needs admin rights to send messages in topics.</p>
+      </div>
+
+      <!-- 10e: Get your IDs -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">E</span> Get your IDs</h3>
+        <ol>
+          <li>Add <a href="https://t.me/raw_data_bot" target="_blank" class="link">@RawDataBot</a> to the group temporarily</li>
+          <li>It posts a message with the group's <code>chat_id</code> (a negative number like <code>-1001234567890</code>)</li>
+          <li>Now remove @RawDataBot from the group</li>
+          <li>Send a private message to <a href="https://t.me/userinfobot" target="_blank" class="link">@userinfobot</a> to get your user ID</li>
+        </ol>
+
+        <div class="field">
+          <label>Group Chat ID</label>
+          <input type="text" id="groupId" placeholder="e.g. -1001234567890">
+        </div>
+        <div class="field">
+          <label>Your User ID</label>
+          <input type="text" id="userId" placeholder="e.g. 123456789">
+        </div>
+      </div>
+
+      <!-- 10f: Get topic thread IDs -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">F</span> Get topic thread IDs</h3>
+        <p style="font-size:14px;">In Telegram Desktop, right-click a message in each topic and select <strong>Copy Message Link</strong>.</p>
+        <p style="font-size:14px;">The link format is: <code>https://t.me/c/GROUP_ID/THREAD_ID/MSG_ID</code></p>
+        <p style="font-size:14px;">The middle number is the thread_id.</p>
+        <p class="beginner-only hint">If you created the topics in the order listed above, the defaults should be correct.</p>
+
+        <div class="topic-grid" style="margin-top:12px;">
+          <div class="field">
+            <label>&#128188; Work</label>
+            <input type="text" id="topicWork" value="2">
+          </div>
+          <div class="field">
+            <label>&#128640; Side Project</label>
+            <input type="text" id="topicSideProject" value="3">
+          </div>
+          <div class="field">
+            <label>&#127968; Personal</label>
+            <input type="text" id="topicPersonal" value="4">
+          </div>
+          <div class="field">
+            <label>&#128172; General</label>
+            <input type="text" id="topicGeneral" value="5">
+          </div>
+          <div class="field">
+            <label>&#128736; Development</label>
+            <input type="text" id="topicDev" value="6">
+          </div>
+        </div>
+      </div>
+
+      <!-- 10g: Install the Telegram plugin -->
+      <div class="substep-card">
+        <h3><span class="substep-badge">G</span> Install the Telegram plugin</h3>
+        <p style="font-size:14px;">In Claude Code, run:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-install">/plugin install telegram@claude-plugins-official</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">If the marketplace is not added yet:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-marketplace">/plugin marketplace add anthropics/claude-plugins-official</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">Configure with your token:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-configure">/telegram:configure YOUR_TOKEN</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">Exit Claude Code and relaunch with:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-launch">claude --channels plugin:telegram@claude-plugins-official</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">DM your bot on Telegram -- it replies with a pairing code.</p>
+        <div class="field">
+          <label>Pairing Code</label>
+          <input type="text" id="pairingCode" placeholder="e.g. ABC123">
+        </div>
+        <p style="font-size:14px;">In Claude Code, run:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-pair">/telegram:access pair YOUR_CODE</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">Lock it down:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-policy">/telegram:access policy allowlist</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+        <p style="font-size:14px;">Add your group:</p>
+        <div class="cmd-block">
+          <code id="cmd-tg-group">/telegram:access group add CHAT_ID --allow USER_ID</code>
+          <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(9)">Back</button>
+      <button class="primary" onclick="goToStep(11)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 11: Side Project (optional)                              -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-11">
+    <h2>Side Project</h2>
+    <p class="beginner-only">If you have a side project, Dylan can help manage it -- tracking progress, reviewing code, and keeping notes. You can always add one later.</p>
+    <p class="intermediate-only">Optional. Dylan can integrate with a side project repo.</p>
+    <p class="expert-only" style="color:var(--text-tertiary);">Optional project integration.</p>
+
+    <div class="toggle-wrapper" onclick="toggleSideProject()">
+      <div class="toggle-track" id="sideProjectToggle">
+        <div class="toggle-thumb"></div>
+      </div>
+      <span class="toggle-label" id="sideProjectToggleLabel">No side project right now</span>
+    </div>
+
+    <div class="optional-section" id="sideProjectSection">
+      <div class="divider"></div>
+      <div class="field">
+        <label>Project name</label>
+        <input type="text" id="sideProjectName" placeholder="e.g. My SaaS App">
+      </div>
+      <div class="field">
+        <label>Local repo path</label>
+        <input type="text" id="sideProjectPath" placeholder="e.g. /Users/you/projects/my-app">
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="secondary" onclick="goToStep(10)">Back</button>
+      <button class="primary" onclick="goToStep(12)">Continue</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 12: Review & Apply                                       -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-12">
+    <h2>Review &amp; Apply</h2>
+    <p>Here's what will be configured. Review and hit apply when ready.</p>
+
+    <div id="reviewSummary"></div>
+
+    <div id="applyProgress" class="apply-progress" style="display:none;">
+      <div class="divider"></div>
+      <div class="file-list" id="applyFileList"></div>
+    </div>
+
+    <div class="button-row" id="step12Buttons">
+      <button class="secondary" onclick="goToStep(11)">Back</button>
+      <button class="primary" id="applyBtn" onclick="applyConfig()">Apply Configuration</button>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 13: You're Ready!                                        -->
+  <!-- ============================================================ -->
+  <div class="step" id="step-13">
+    <div class="completion-logo">
+      <img src="logo.png" style="border-radius: 50%; object-fit: cover;" alt="Dylan">
+    </div>
+    <h1 style="text-align:center;">Dylan is ready to assist you!</h1>
+    <p style="text-align:center; color:#888;">Your personal assistant team is configured and waiting.</p>
+
+    <div id="launchTelegram" style="display:none;">
+      <p style="color:var(--text); font-weight:500; margin-bottom:8px;">Launch with Telegram:</p>
+      <div class="cmd-block">
+        <code id="launchCmd">claude --channels plugin:telegram@claude-plugins-official</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+    </div>
+
+    <div id="launchPlain">
+      <p style="color:var(--text); font-weight:500; margin-bottom:8px;">Launch Dylan:</p>
+      <div class="cmd-block">
+        <code id="launchCmdPlain">claude</code>
+        <button class="copy-btn" onclick="copyCmd(this)">Copy</button>
+      </div>
+    </div>
+
+    <div id="obsidianBtn" style="display:none; margin-top:16px;">
+      <button class="secondary" onclick="openObsidian()">Open Brain in Obsidian</button>
+    </div>
+
+    <div class="tip" style="margin-top:24px;">
+      <strong>First thing to do:</strong> Send <code>/onboard</code> in any channel to teach Dylan about you. The more context you give, the more useful Dylan becomes.
+    </div>
+
+    <div style="margin-top:24px;">
+      <h3 style="margin-bottom:12px;">Try these:</h3>
+      <ul style="padding-left:20px; font-size:14px;">
+        <li>In the Work channel: "What's on my plate this week?"</li>
+        <li>In the Personal channel: "Remind me to call mom at 5pm"</li>
+        <li>Use <code>/brief</code> for a morning status update</li>
+      </ul>
+    </div>
+
+    <div class="links-row" style="margin-top:24px;">
+      <a href="ARCHITECTURE.md" target="_blank">ARCHITECTURE.md</a>
+      <a href="CHANNELS.md" target="_blank">CHANNELS.md</a>
+      <a href="SETUP.md" target="_blank">SETUP.md</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var state = {
+  currentStep: 1,
+  totalSteps: 13,
+  level: null,
+  telegramEnabled: true,
+  obsidianEnabled: true,
+  sideProjectEnabled: false,
+  deps: {}
+};
+
+// --- Level Management ---
+function selectLevel(level) {
+  state.level = level;
+  document.body.className = level;
+  localStorage.setItem('dylan-level', level);
+
+  document.querySelectorAll('.level-card').forEach(function(card) {
+    card.classList.remove('selected');
+  });
+  document.getElementById('level-' + level).classList.add('selected');
+  document.getElementById('step2Next').disabled = false;
+}
+
+// --- Step Management ---
+function goToStep(n) {
+  var logoSmall = document.getElementById('logo-small');
+  if (n === 1 || n === 13) {
+    logoSmall.style.display = 'none';
+  } else {
+    logoSmall.style.display = 'flex';
+  }
+
+  document.querySelectorAll('.step').forEach(function(el) {
+    el.classList.remove('active');
+  });
+  document.getElementById('step-' + n).classList.add('active');
+
+  state.currentStep = n;
+  updateProgress();
+
+  // Auto-check dependencies on relevant steps
+  var depStepMap = { 4: 'brew', 5: 'node', 6: 'python', 7: 'claude', 8: 'bun' };
+  if (depStepMap[n]) {
+    checkSingleDep(depStepMap[n]);
+  }
+  if (n === 9 && state.obsidianEnabled) {
+    checkSingleDep('obsidian');
+  }
+  if (n === 12) buildReview();
+  if (n === 13) setupLaunchStep();
+
+  window.scrollTo(0, 0);
+}
+
+function updateProgress() {
+  var pct = (state.currentStep / state.totalSteps) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
+  document.getElementById('step-counter').textContent = 'Step ' + state.currentStep + ' of ' + state.totalSteps;
+}
+
+// --- Validation ---
+function validateNameAndContinue() {
+  var full = document.getElementById('fullName').value.trim();
+  var first = document.getElementById('firstName').value.trim();
+  if (!full || !first) {
+    if (!full) document.getElementById('fullName').focus();
+    else document.getElementById('firstName').focus();
+    return;
+  }
+  goToStep(4);
+}
+
+// --- Dependency Checks ---
+function checkSingleDep(dep) {
+  var dot = document.getElementById('dep-' + dep + '-dot');
+  var statusEl = document.getElementById('dep-' + dep + '-status');
+  var labelEl = document.getElementById('dep-' + dep + '-label');
+  if (!dot || !statusEl) return;
+
+  dot.className = 'status-dot progress';
+  statusEl.textContent = 'Checking...';
+  statusEl.style.color = '#888';
+  if (labelEl) labelEl.textContent = '';
+
+  fetch('/api/check-deps', { method: 'POST' })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      state.deps = Object.assign({}, state.deps, data);
+
+      if (data[dep]) {
+        dot.className = 'status-dot success';
+        statusEl.textContent = dep.charAt(0).toUpperCase() + dep.slice(1) + ' is installed';
+        statusEl.style.color = 'var(--green)';
+        if (labelEl) labelEl.textContent = 'Installed';
+        var instructions = document.getElementById(dep + '-install-instructions');
+        if (instructions) instructions.style.display = 'none';
+        // Show auth instructions for claude
+        if (dep === 'claude') {
+          var authEl = document.getElementById('claude-auth-instructions');
+          if (authEl) authEl.style.display = 'block';
+        }
+      } else {
+        dot.className = 'status-dot error';
+        statusEl.textContent = 'Not found';
+        statusEl.style.color = 'var(--red)';
+        if (labelEl) labelEl.textContent = 'Missing';
+        var instructions = document.getElementById(dep + '-install-instructions');
+        if (instructions) instructions.style.display = 'block';
+        if (dep === 'claude') {
+          var authEl = document.getElementById('claude-auth-instructions');
+          if (authEl) authEl.style.display = 'none';
+        }
+      }
+    })
+    .catch(function() {
+      dot.className = 'status-dot error';
+      statusEl.textContent = 'Check failed';
+      statusEl.style.color = 'var(--red)';
+    });
+}
+
+// --- Toggles ---
+function toggleTelegram() {
+  state.telegramEnabled = !state.telegramEnabled;
+  var track = document.getElementById('telegramToggle');
+  var label = document.getElementById('telegramToggleLabel');
+  var section = document.getElementById('telegramSection');
+  if (state.telegramEnabled) {
+    track.classList.add('on');
+    label.textContent = 'Connect via Telegram';
+    section.classList.add('open');
+  } else {
+    track.classList.remove('on');
+    label.textContent = "Skip -- I'll use the terminal only";
+    section.classList.remove('open');
+  }
+}
+
+function toggleObsidian() {
+  state.obsidianEnabled = !state.obsidianEnabled;
+  var track = document.getElementById('obsidianToggle');
+  var label = document.getElementById('obsidianToggleLabel');
+  var section = document.getElementById('obsidianSection');
+  if (state.obsidianEnabled) {
+    track.classList.add('on');
+    label.textContent = 'Install Obsidian (recommended)';
+    section.classList.add('open');
+    checkSingleDep('obsidian');
+  } else {
+    track.classList.remove('on');
+    label.textContent = 'Skip Obsidian';
+    section.classList.remove('open');
+  }
+}
+
+function toggleSideProject() {
+  state.sideProjectEnabled = !state.sideProjectEnabled;
+  var track = document.getElementById('sideProjectToggle');
+  var label = document.getElementById('sideProjectToggleLabel');
+  var section = document.getElementById('sideProjectSection');
+  if (state.sideProjectEnabled) {
+    track.classList.add('on');
+    label.textContent = 'Yes, I have a side project';
+    section.classList.add('open');
+  } else {
+    track.classList.remove('on');
+    label.textContent = 'No side project right now';
+    section.classList.remove('open');
+  }
+}
+
+// --- Copy Command ---
+function copyCmd(btn) {
+  var block = btn.closest('.cmd-block');
+  var code = block.querySelector('code');
+  var text = code.textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copied!';
+    setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+  });
+}
+
+// --- Config ---
+function getConfig() {
+  var config = {
+    fullName: document.getElementById('fullName').value.trim(),
+    firstName: document.getElementById('firstName').value.trim()
+  };
+
+  if (state.telegramEnabled) {
+    config.botToken = document.getElementById('botToken').value.trim();
+    config.botUsername = document.getElementById('botUsername').value.trim();
+    config.groupId = document.getElementById('groupId').value.trim();
+    config.userId = document.getElementById('userId').value.trim();
+    config.topicWork = document.getElementById('topicWork').value.trim();
+    config.topicSideProject = document.getElementById('topicSideProject').value.trim();
+    config.topicPersonal = document.getElementById('topicPersonal').value.trim();
+    config.topicGeneral = document.getElementById('topicGeneral').value.trim();
+    config.topicDev = document.getElementById('topicDev').value.trim();
+  }
+
+  if (state.sideProjectEnabled) {
+    config.sideProjectName = document.getElementById('sideProjectName').value.trim();
+    config.sideProjectPath = document.getElementById('sideProjectPath').value.trim();
+  }
+
+  return config;
+}
+
+// --- Review ---
+function buildReview() {
+  var config = getConfig();
+  var html = '';
+
+  html += '<div class="summary-section">';
+  html += '<h3>Identity</h3>';
+  html += '<div class="summary-value">' + escHtml(config.fullName) + ' (' + escHtml(config.firstName) + ')</div>';
+  html += '</div>';
+
+  html += '<div class="summary-section">';
+  html += '<h3>Dependencies</h3>';
+  var depItems = [
+    { key: 'brew', label: 'Homebrew' },
+    { key: 'node', label: 'Node.js' },
+    { key: 'python', label: 'Python 3' },
+    { key: 'claude', label: 'Claude Code' },
+    { key: 'bun', label: 'Bun' }
+  ];
+  if (state.obsidianEnabled) {
+    depItems.push({ key: 'obsidian', label: 'Obsidian' });
+  }
+  depItems.forEach(function(d) {
+    var ok = state.deps[d.key];
+    html += '<div style="display:flex;align-items:center;padding:4px 0;">';
+    html += '<span class="status-dot ' + (ok ? 'success' : 'pending') + '"></span>';
+    html += '<span>' + d.label + (ok ? '' : ' (not installed)') + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  if (state.telegramEnabled) {
+    html += '<div class="summary-section">';
+    html += '<h3>Telegram</h3>';
+    html += '<div class="summary-value">Bot: @' + escHtml(config.botUsername || '(not set)') + '</div>';
+    html += '<div class="summary-value">Group: ' + escHtml(config.groupId || '(not set)') + '</div>';
+    html += '<div class="summary-value">User: ' + escHtml(config.userId || '(not set)') + '</div>';
+    html += '</div>';
+  } else {
+    html += '<div class="summary-section">';
+    html += '<h3>Telegram</h3>';
+    html += '<div class="summary-value" style="color:var(--text-tertiary);">Skipped</div>';
+    html += '</div>';
+  }
+
+  if (state.sideProjectEnabled) {
+    html += '<div class="summary-section">';
+    html += '<h3>Side Project</h3>';
+    html += '<div class="summary-value">' + escHtml(config.sideProjectName || '(unnamed)') + '</div>';
+    html += '<div class="summary-value" style="font-size:13px;color:#888;">' + escHtml(config.sideProjectPath || '(no path)') + '</div>';
+    html += '</div>';
+  } else {
+    html += '<div class="summary-section">';
+    html += '<h3>Side Project</h3>';
+    html += '<div class="summary-value" style="color:var(--text-tertiary);">Skipped</div>';
+    html += '</div>';
+  }
+
+  document.getElementById('reviewSummary').innerHTML = html;
+  document.getElementById('applyProgress').style.display = 'none';
+  document.getElementById('applyBtn').disabled = false;
+  document.getElementById('applyBtn').textContent = 'Apply Configuration';
+}
+
+// --- Apply ---
+function applyConfig() {
+  var btn = document.getElementById('applyBtn');
+  btn.disabled = true;
+  btn.textContent = 'Applying...';
+
+  var progress = document.getElementById('applyProgress');
+  var fileList = document.getElementById('applyFileList');
+  progress.style.display = 'block';
+  fileList.innerHTML = '<div class="file-item"><span class="status-dot progress"></span><span>Processing files...</span></div>';
+
+  var config = getConfig();
+
+  fetch('/api/apply-config', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(config)
+  })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      var html = '';
+      if (data.results && data.results.length > 0) {
+        data.results.forEach(function(item, i) {
+          html += '<div class="file-item" id="file-item-' + i + '">';
+          html += '<span class="status-dot progress"></span>';
+          html += '<span>' + escHtml(item.file) + '</span>';
+          if (item.error) {
+            html += '<span style="color:var(--red);margin-left:8px;font-size:12px;">' + escHtml(item.error) + '</span>';
+          }
+          html += '</div>';
+        });
+        html += '<div style="margin-top:12px;font-size:13px;color:#888;">' + data.results.length + ' files updated</div>';
+      } else {
+        html = '<div class="file-item"><span class="status-dot success"></span><span>No template variables found to replace.</span></div>';
+      }
+      fileList.innerHTML = html;
+
+      // Animate dots one by one
+      if (data.results && data.results.length > 0) {
+        data.results.forEach(function(item, i) {
+          setTimeout(function() {
+            var el = document.getElementById('file-item-' + i);
+            if (el) {
+              var dot = el.querySelector('.status-dot');
+              dot.className = 'status-dot ' + (item.status === 'updated' ? 'success' : 'error');
+            }
+          }, (i + 1) * 150);
+        });
+      }
+
+      var totalDelay = data.results ? (data.results.length + 1) * 150 + 600 : 800;
+      setTimeout(function() {
+        btn.textContent = 'Done';
+        setTimeout(function() { goToStep(13); }, 500);
+      }, totalDelay);
+    })
+    .catch(function(err) {
+      fileList.innerHTML = '<div class="file-item"><span class="status-dot error"></span><span>Error: ' + escHtml(String(err)) + '</span></div>';
+      btn.disabled = false;
+      btn.textContent = 'Retry';
+    });
+}
+
+// --- Launch Step ---
+function setupLaunchStep() {
+  if (state.telegramEnabled) {
+    document.getElementById('launchTelegram').style.display = 'block';
+    document.getElementById('launchPlain').style.display = 'none';
+  } else {
+    document.getElementById('launchTelegram').style.display = 'none';
+    document.getElementById('launchPlain').style.display = 'block';
+  }
+
+  if (state.obsidianEnabled && state.deps.obsidian) {
+    document.getElementById('obsidianBtn').style.display = 'block';
+  }
+}
+
+// --- Utilities ---
+function openObsidian() {
+  fetch('/api/run-command', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ command: 'open -a Obsidian' })
+  });
+}
+
+function escHtml(str) {
+  var div = document.createElement('div');
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+}
+
+// --- Init ---
+var savedLevel = localStorage.getItem('dylan-level');
+if (savedLevel) {
+  selectLevel(savedLevel);
+}
+updateProgress();
+</script>
+</body>
+</html>

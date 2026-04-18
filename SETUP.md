@@ -41,7 +41,38 @@ All optional fields can be skipped by pressing Enter. You can always configure t
 5. BotFather will give you a **bot token** like `1234567890:ABCdefGHIjklMNOpqrSTUvwxYZ`. Save this.
 6. Send `/mybots` to BotFather, select your bot, then **Bot Settings** > **Group Privacy** > **Turn off** (so the bot can read group messages)
 
-## Step 4: Install the Telegram Plugin
+## Step 4: Install Obsidian (Optional but Recommended)
+
+Obsidian gives you a visual graph view, rich editing, and mobile access to your brain files.
+
+1. **Install Obsidian** (free):
+   ```bash
+   brew install --cask obsidian
+   ```
+   Or download from [obsidian.md](https://obsidian.md).
+
+2. The setup wizard can do this for you — it detects whether Obsidian is installed and offers to install it.
+
+3. **Open the brain folder as a vault**: In Obsidian, click "Open folder as vault" and select the `brain/` directory inside your project.
+
+4. **Install the Dataview plugin**: Go to Settings → Community Plugins → Browse → search "Dataview" → Install → Enable. This powers the dynamic dashboards in `Dashboard.md`.
+
+## Step 5: Install Caterpillar (Optional — Security Scanner)
+
+Caterpillar scans your agent and skill files for security threats.
+
+```bash
+npm install -g @alice-io/caterpillar
+```
+
+Run a baseline scan:
+```bash
+caterpillar scan . --mode offline
+```
+
+The Security Scanner agent will use Caterpillar automatically when you create or modify agent/skill files.
+
+## Step 6: Install the Telegram Plugin
 
 In Claude Code:
 
@@ -49,7 +80,7 @@ In Claude Code:
 /plugin install telegram@claude-plugins-official
 ```
 
-## Step 5: Configure the Bot Token
+## Step 7: Configure the Bot Token
 
 In Claude Code:
 
@@ -59,7 +90,7 @@ In Claude Code:
 
 Replace `YOUR_BOT_TOKEN` with the token from BotFather.
 
-## Step 6: Create a Telegram Forum Group
+## Step 8: Create a Telegram Forum Group
 
 1. Open Telegram and create a new **Group**
 2. Name it something like "My Assistant" or "PA Team"
@@ -71,13 +102,13 @@ Replace `YOUR_BOT_TOKEN` with the token from BotFather.
    - **General** — for off-topic questions
    - **Development** — for system bugs and feature requests
 
-## Step 7: Add the Bot to the Group
+## Step 9: Add the Bot to the Group
 
 1. Go to your Forum group settings
 2. Add your bot as a member
 3. Promote it to **Admin** (it needs admin rights to read and send messages in topics)
 
-## Step 8: Get Your IDs
+## Step 10: Get Your IDs
 
 ### Group Chat ID
 
@@ -98,7 +129,7 @@ If you didn't provide these during setup, update them now:
 2. Replace `{{TELEGRAM_USER_ID}}` with your user ID
 3. Replace `{{BOT_USERNAME}}` with your bot username (e.g., `@my_assistant_bot`)
 
-## Step 9: Pair Your Account
+## Step 11: Pair Your Account
 
 In Claude Code:
 
@@ -108,7 +139,7 @@ In Claude Code:
 
 Follow the prompts to pair your Telegram account and add the group.
 
-## Step 10: Launch
+## Step 12: Launch
 
 ```bash
 claude --channels plugin:telegram@claude-plugins-official
@@ -116,7 +147,7 @@ claude --channels plugin:telegram@claude-plugins-official
 
 The assistant is now listening on your Telegram group. Send a message in any topic to test it.
 
-## Step 11: Onboard
+## Step 13: Onboard
 
 Send `/onboard` in any channel. The Onboarding Coach will walk you through a series of questions to populate the brain with your context:
 
@@ -128,7 +159,7 @@ Send `/onboard` in any channel. The Onboarding Coach will walk you through a ser
 
 This takes about 10-15 minutes and dramatically improves the assistant's usefulness.
 
-## Step 12: Test Each Channel
+## Step 14: Test Each Channel
 
 Send a test message in each topic to verify the Account Managers respond with the correct personality:
 

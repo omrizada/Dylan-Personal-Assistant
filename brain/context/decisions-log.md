@@ -6,7 +6,7 @@ source: template
 
 # Decisions Log
 
-Record of key decisions, their rationale, and outcomes.
+Record of key decisions, their rationale, and outcomes. Related: [[projects]] | [[stakeholders]] | [[strategies]] | [[Dashboard]]
 
 ## Recent Decisions
 

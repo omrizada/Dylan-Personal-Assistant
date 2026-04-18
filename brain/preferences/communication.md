@@ -6,7 +6,7 @@ source: template
 
 # Communication Preferences
 
-How {{USER_FIRST_NAME}} likes to receive information and communicate.
+How {{USER_FIRST_NAME}} likes to receive information and communicate. Related: [[document-style]] | [[analysis-style]] | [[stakeholders]] | [[Dashboard]]
 
 ## Response Style
 

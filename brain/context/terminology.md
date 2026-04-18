@@ -6,7 +6,7 @@ source: template
 
 # Terminology
 
-Domain-specific terms and definitions used in {{USER_FIRST_NAME}}'s world.
+Domain-specific terms and definitions used in {{USER_FIRST_NAME}}'s world. Related: [[projects]] | [[stakeholders]] | [[Dashboard]]
 
 ## Business Terms
 

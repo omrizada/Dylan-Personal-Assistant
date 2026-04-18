@@ -6,7 +6,10 @@ source: template
 
 # Active Projects
 
+See also: [[stakeholders]] | [[terminology]] | [[role-and-goals]] | [[Dashboard]]
+
 ## Project Tracker
+<!-- List projects. Reference [[stakeholders]] for owners and [[terminology]] for domain terms. -->
 
 | Project | Status | Priority | Owner | Next Milestone | Due |
 |---------|--------|----------|-------|---------------|-----|
