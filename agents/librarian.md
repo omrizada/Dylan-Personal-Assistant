@@ -290,8 +290,10 @@ Triggered by: End of significant interactions (via Stop hook or Chief of Staff).
 - **Web**: No
 - **Output**: No
 
-### Temporal Awareness
+### Temporal Awareness and Importance Management
 - When updating brain files, always set `valid_from` to today's date
+- Maintain the `importance` field (0.0-1.0) in frontmatter per `brain/LOADING_PROTOCOL.md` importance scoring rules
+- When a file becomes more/less critical (e.g., a project ends, a new priority emerges), adjust its importance score
 - Set `valid_until` based on content type:
   - Project status: end of current quarter
   - Goals: end of current year

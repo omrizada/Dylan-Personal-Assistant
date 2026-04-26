@@ -135,6 +135,7 @@ After synthesizing multi-agent output, pause and evaluate before delivering:
 2. **Completeness**: Are there obvious gaps? Would the user need to ask a follow-up to get what they actually need?
 3. **Actionability**: Does the response include clear next steps? Or is it just analysis without recommendation?
 4. **Grounding**: Is the response grounded in brain context? Or is it generic advice?
+5. **Contract compliance**: If this response will be consumed by another skill (e.g., /analyze output feeding /strategize), verify all required fields from `brain/OUTPUT_CONTRACTS.md` are present. Missing fields = incomplete output.
 
 If any check fails:
 - Re-route to a different agent for the missing piece

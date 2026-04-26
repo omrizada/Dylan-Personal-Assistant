@@ -68,6 +68,18 @@ All definitions in `skills/`:
 | `/postmortem` | Blameless after-action review with 5 Whys and prevention plan |
 | `/coach` | Leadership coaching -- SBI, GROW, NVC frameworks |
 
+## Workflows (Multi-Skill Pipelines)
+
+Formal pipelines in `workflows/`. The Chief of Staff auto-detects when a request matches a workflow:
+
+| Workflow | Trigger | Steps |
+|----------|---------|-------|
+| Competitive Intel | "research competitors" | Research → Analyze → Draft → Challenge |
+| Decision Pipeline | "help me decide" | Analyze → Strategize → Premortem → Decide → Record |
+| Document Pipeline | "write a researched report" | Research → Draft → Review → Revise |
+| Weekly Ops | "weekly review" | Review → Followups → OKRs → Status → Synthesize |
+| Inbox Zero | "process my inbox" | Triage → Extract → Delegate → Draft responses |
+
 ---
 
 ## Brain System

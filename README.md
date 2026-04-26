@@ -9,6 +9,8 @@ A "clone and configure" template for a personal AI assistant that:
 - Has a **team of 10 specialist agents** (Analyst, Strategist, Writer, Critic, Input Guard, Security Scanner, etc.) that work behind the scenes
 - Maintains a **self-learning brain** with tiered memory loading that grows smarter with every interaction
 - Supports **28 slash commands** including `/do` (universal router -- just describe what you want), core skills (/brief, /analyze, /strategize, /draft, /challenge, /research, /ingest, /onboard, /learn, /status, /decide, /digest) and execution skills (/weekly-review, /meeting-prep, /followup, /triage, /premortem, /report, /reflect, /repurpose, /prioritize, /okr, /delegate, /extract-wisdom, /negotiate, /postmortem, /coach)
+- Has **5 multi-skill workflows** (competitive intel, decision pipeline, document pipeline, weekly ops, inbox zero) with output contracts for typed skill chaining
+- Uses **importance scoring** on brain files (0.0-1.0) for smart context window budgeting
 - Includes **security features**: Input Guard screens messages for prompt injection, Security Scanner audits agent files via Caterpillar
 
 ## How It Works
@@ -29,7 +31,9 @@ Each channel has its own Account Manager with a distinct personality:
 
 - **Multi-channel routing** via Telegram Forum topics
 - **Account Manager layer** — you never talk to the team directly
-- **Self-learning brain** — auto-captures decisions, preferences, patterns with tiered memory loading (hot/warm/cold)
+- **Self-learning brain** — auto-captures decisions, preferences, patterns with tiered memory loading (hot/warm/cold) and importance scoring
+- **Output contracts** — typed skill-to-skill chaining ensures no information is lost between pipeline steps
+- **Multi-skill workflows** — formal pipelines for competitive intel, decisions, document creation, weekly ops, and inbox zero
 - **Security hardening** — Input Guard screens for injection attacks, audit log tracks agent actions
 - **Resource ingestion** — feed it documents and it extracts knowledge
 - **Weekly check-ins** — the system asks you questions to improve itself

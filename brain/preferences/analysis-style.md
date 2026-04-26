@@ -2,6 +2,7 @@
 last_updated:
 confidence: low
 source: template
+importance: 0.6
 ---
 
 # How {{USER_FIRST_NAME}} Likes Analysis Done

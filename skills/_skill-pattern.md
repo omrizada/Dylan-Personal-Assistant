@@ -44,6 +44,15 @@ Instead of listing every brain file, use tier references:
 | Document | output/documents/ |
 | Inline response | No file saved |
 
+## Output Contracts
+
+If the skill has a defined output contract in `brain/OUTPUT_CONTRACTS.md`, the output MUST include all required fields. This ensures downstream skills can parse and use the output correctly.
+
+Check `brain/OUTPUT_CONTRACTS.md` for:
+- What fields are required for this skill's output
+- Which skills consume this output
+- The expected format for each field
+
 ## Standard Follow-Up Pattern
 
 After every skill execution, offer 2-3 relevant follow-ups:

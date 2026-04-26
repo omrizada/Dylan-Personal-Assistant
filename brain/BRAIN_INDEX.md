@@ -48,6 +48,7 @@ Master index of all brain files. Updated automatically when brain files change. 
 | `channels/development/architecture.md` | System architecture notes | — | low |
 | `channels/development/security-log.md` | Security scan results from Caterpillar | — | high |
 | `channels/development/audit-log.md` | Input Guard + Librarian action audit log | — | high |
+| `channels/development/checkpoint.md` | Multi-step operation checkpoints | — | high |
 
 ## Resources
 

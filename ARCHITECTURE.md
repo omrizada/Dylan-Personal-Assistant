@@ -130,9 +130,18 @@ personal-assistant-template/
 │   └── development/
 │       └── context.md         # Development channel
 │
+├── workflows/                 # Multi-skill pipeline definitions
+│   ├── README.md              # How workflows work
+│   ├── competitive-intel.md   # Research → Analyze → Draft → Challenge
+│   ├── decision-pipeline.md   # Analyze → Strategize → Premortem → Decide → Record
+│   ├── document-pipeline.md   # Research → Draft → Review → Revise
+│   ├── weekly-ops.md          # Review → Followups → OKRs → Status → Synthesize
+│   └── inbox-zero.md          # Triage → Extract → Delegate → Draft
+│
 ├── brain/                     # Self-learning knowledge base
 │   ├── BRAIN_INDEX.md         # Master index of all brain files
-│   ├── LOADING_PROTOCOL.md    # Tiered loading rules (hot/warm/cold)
+│   ├── LOADING_PROTOCOL.md    # Tiered loading rules (hot/warm/cold) + importance scoring
+│   ├── OUTPUT_CONTRACTS.md    # Typed output formats for skill-to-skill chaining
 │   ├── frameworks.md          # Shared analytical/strategic/coaching frameworks
 │   ├── context/               # Who you are and what you're doing
 │   │   ├── role-and-goals.md
@@ -162,7 +171,8 @@ personal-assistant-template/
 │   │       ├── backlog.md
 │   │       ├── architecture.md
 │   │       ├── security-log.md
-│   │       └── audit-log.md
+│   │       ├── audit-log.md
+│   │       └── checkpoint.md
 │   └── resources/             # Digested external resources
 │       ├── summaries/
 │       └── insights/
@@ -191,6 +201,8 @@ The system uses shared components to reduce duplication and keep files focused:
 | **AM Base** | `agents/account-managers/_am-base.md` | Shared Account Manager behavior. Each AM file adds only channel-specific content. |
 | **Skill Pattern** | `skills/_skill-pattern.md` | Template structure for creating new skills. Includes brain loading shorthand and output routing. |
 | **Universal Router** | `skills/do.md` | `/do` command that maps natural language intent to the right skill. Users only need to remember one command. |
+| **Output Contracts** | `brain/OUTPUT_CONTRACTS.md` | Typed output formats for skill-to-skill chaining. Ensures pipeline steps produce parseable, complete output. |
+| **Workflows** | `workflows/` | Formal multi-skill pipeline definitions. Chief of Staff auto-detects matching patterns and executes step-by-step. |
 
 ### Design Principles
 

@@ -2,6 +2,7 @@
 last_updated:
 confidence: low
 source: template
+importance: 1.0
 ---
 
 # Role and Goals

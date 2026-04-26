@@ -2,6 +2,7 @@
 last_updated:
 confidence: low
 source: auto
+importance: 0.7
 ---
 
 # Session Notes

@@ -2,6 +2,7 @@
 last_updated:
 confidence: low
 source: template
+importance: 0.8
 ---
 
 # Stakeholders

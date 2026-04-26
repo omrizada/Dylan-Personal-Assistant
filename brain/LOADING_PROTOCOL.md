@@ -65,6 +65,22 @@ See also [[BRAIN_INDEX]] and [[Dashboard]].
 | Security Scanner | None — reads project files directly | N/A |
 | Input Guard | None — screens messages only | N/A |
 
+## Importance Scoring
+
+Each brain file has an `importance` field (0.0-1.0) in its frontmatter. When context window budget is tight:
+
+1. Always load files with importance >= 0.9 (critical)
+2. Load files with importance >= 0.7 when topic matches (high)
+3. Load files with importance >= 0.5 only when specifically relevant (moderate)
+4. Files with importance < 0.5 are loaded only on explicit request (archival)
+
+Composite loading priority = (tier_weight x 0.4) + (importance x 0.3) + (recency x 0.3)
+
+Where:
+- tier_weight: Hot=1.0, Warm=0.6, Cold=0.2
+- importance: from frontmatter (0.0-1.0)
+- recency: days since last_updated, normalized (today=1.0, 30+ days=0.2)
+
 ## Account Manager Loading Profiles
 
 | AM | Channel Brain | Additional Warm Files |
